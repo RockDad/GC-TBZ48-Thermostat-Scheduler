@@ -2,6 +2,5 @@
 
 Based on work by briodan saved at https://github.com/briodan/Thermostat_scheduler
 
+Base thermostat work by briodan was sufficient but I want better control of setting heating/cooling set points.
 
-
-# thermostat_scheduler
