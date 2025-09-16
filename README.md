@@ -1,16 +1,4 @@
-<center>
-
-**Home Assistant Support**
-
-**for the**
-
-**GoControl Model GC-TBZ47**
-
-**Z-Wave Plus**
-
-**Thermostat**
-
-</center>
+**Home Assistant Support for the GoControl Model GC-TBZ47 Z-Wave Plus Thermostat**
 
 Based on work by briodan saved at https://github.com/briodan/Thermostat_scheduler
 
