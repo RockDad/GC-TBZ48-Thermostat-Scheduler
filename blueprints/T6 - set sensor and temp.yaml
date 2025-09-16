@@ -1,0 +1,512 @@
+blueprint:
+  name: T6 - set sensor and temp
+  description: T6 - set sensor and temp
+  domain: automation
+  homeassistant:
+    min_version: 2024.10.0
+  input:
+    global_section:
+      name: Global Settings
+      icon: mdi:cog
+      description: Global Settings
+      collapsed: true
+      input:
+        frequency:
+          name: Frequency
+          description: how often to check sensor status? 1, 5 or 10 minues. 1 min
+            should be used for testing purposed with a generic thermostat
+          selector:
+            select:
+              options:
+              - /1
+              - /5
+              - /10
+              - /15
+              - /30
+              custom_value: false
+              sort: false
+              multiple: false
+        default_temp:
+          name: default temperature
+          description: in case of issues with sensors it will default to this value
+          default:
+          selector:
+            number:
+              min: 1.0
+              max: 150.0
+              step: 1.0
+              mode: slider
+        temp_current_sensor:
+          name: Current Temp Sensor
+          description: This entity will be updated to display the current temp sensor
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - select
+              multiple: false
+              reorder: false
+        temp_current_target:
+          name: Current Temp Target
+          description: This entity will be updated to display the temperature target
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - number
+              multiple: false
+              reorder: false
+    time_1_section:
+      name: 1st Time interval settings
+      icon: mdi:clock
+      description: 1st Time interval settings
+      collapsed: true
+      input:
+        time_1:
+          name: M-F first time
+          description: first time interval of the day on Monday to Friday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - time
+              multiple: false
+              reorder: false
+        target_temp_1:
+          name: M-F first target temperature
+          description: the thermostat will heat to target sensor 1 temp minus heat
+            tolerance setting , or cool to sensor 1 temp plus cool tolerance setting  on
+            Monday to Friday
+          default:
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - number
+              multiple: false
+              reorder: false
+        sensor_1:
+          name: M-F first sensor
+          description: first sensor to use for temperature on Monday to Friday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - select
+              multiple: false
+              reorder: false
+    time_2_section:
+      name: 2nd Time interval settings
+      icon: mdi:clock
+      description: 2nd Time interval settings
+      collapsed: true
+      input:
+        time_2:
+          name: M-F second time
+          description: second time interval of the day on Monday to Friday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - time
+              multiple: false
+              reorder: false
+        target_temp_2:
+          name: M-F second target temperature
+          description: the thermostat will heat to target sensor 2 temp minus heat
+            tolerance setting , or cool to sensor 2 temp plus cool tolerance setting
+            on Monday to Friday
+          default:
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - number
+              multiple: false
+              reorder: false
+        sensor_2:
+          name: M-F second sensor
+          description: second sensor to use for temperature on Monday to Friday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - select
+              multiple: false
+              reorder: false
+    time_3_section:
+      name: 3rd Time interval settings
+      icon: mdi:clock
+      description: 3rd Time interval settings
+      collapsed: true
+      input:
+        time_3:
+          name: M-F third time
+          description: third time interval of the day on Monday to Friday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - time
+              multiple: false
+              reorder: false
+        target_temp_3:
+          name: M-F third target temperature
+          description: the thermostat will heat to target sensor 3 temp minus heat
+            tolerance setting, or cool to sensor 3 temp plus cool tolerance setting
+            on Monday to Friday
+          default:
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - number
+              multiple: false
+              reorder: false
+        sensor_3:
+          name: M-F third sensor
+          description: third sensor to use for temperature on Monday to Friday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - select
+              multiple: false
+              reorder: false
+    time_4_section:
+      name: 4th Time interval settings
+      icon: mdi:clock
+      description: 4th Time interval settings
+      collapsed: true
+      input:
+        time_4:
+          name: M-F fourth time
+          description: fourth time interval of the day on Monday to Friday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - time
+              multiple: false
+              reorder: false
+        target_temp_4:
+          name: M-F fourth target temperature
+          description: the thermostat will heat to target sensor 4 temp minus heat
+            tolerance setting, or cool to sensor 4 temp plus cool tolerance setting
+            on Monday to Friday
+          default:
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - number
+              multiple: false
+              reorder: false
+        sensor_4:
+          name: M-F fourth sensor
+          description: fourth sensor to use for temperature on Monday to Friday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - select
+              multiple: false
+              reorder: false
+    time_1_ss_section:
+      name: 1st Time interval settings SS
+      icon: mdi:clock
+      description: 1st Time interval settings SS
+      collapsed: true
+      input:
+        time_1_ss:
+          name: S-S first time
+          description: first time interval of the day on Saturday and Sunday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - time
+              multiple: false
+              reorder: false
+        target_temp_1_ss:
+          name: S-S first target temperature
+          description: the thermostat will heat to target sensor 1 temp minus heat
+            tolerance setting, or cool to sensor 1 temp plus cool tolerance setting
+            on Saturday and Sunday
+          default:
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - number
+              multiple: false
+              reorder: false
+        sensor_1_ss:
+          name: S-S first sensor
+          description: first sensor to use for temperature on Saturday and Sunday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - select
+              multiple: false
+              reorder: false
+    time_2_ss_section:
+      name: 2nd Time interval settings SS
+      icon: mdi:clock
+      description: 2nd Time interval settings SS
+      collapsed: true
+      input:
+        time_2_ss:
+          name: S-S second time
+          description: second time interval of the day on Saturday and Sunday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - time
+              multiple: false
+              reorder: false
+        target_temp_2_ss:
+          name: S-S second target temperature
+          description: the thermostat will heat to target sensor 2 temp minus heat
+            tolerance setting, or cool to sensor 2 temp plus cool tolerance setting
+            on Saturday and Sunday
+          default:
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - number
+              multiple: false
+              reorder: false
+        sensor_2_ss:
+          name: S-S second sensor
+          description: second sensor to use for temperature on Saturday and Sunday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - select
+              multiple: false
+              reorder: false
+    time_3_ss_section:
+      name: 3rd Time interval settings SS
+      icon: mdi:clock
+      description: 3rd Time interval settings SS
+      collapsed: true
+      input:
+        time_3_ss:
+          name: S-S third time
+          description: third time interval of the day on Saturday and Sunday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - time
+              multiple: false
+              reorder: false
+        target_temp_3_ss:
+          name: S-S third target temperature
+          description: the thermostat will heat to target sensor 3 temp minus heat
+            tolerance setting, or cool to sensor 3 temp plus cool tolerance setting
+            on Saturday and Sunday
+          default:
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - number
+              multiple: false
+              reorder: false
+        sensor_3_ss:
+          name: S-S third sensor
+          description: third sensor to use for temperature on Saturday and Sunday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - select
+              multiple: false
+              reorder: false
+    time_4_ss_section:
+      name: 4th Time interval settings SS
+      icon: mdi:clock
+      description: 4th Time interval settings SS
+      collapsed: true
+      input:
+        time_4_ss:
+          name: S-S fourth time
+          description: fourth time interval of the day on Saturday and Sunday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - time
+              multiple: false
+              reorder: false
+        target_temp_4_ss:
+          name: S-S fourth target temperature
+          description: the thermostat will heat to target sensor 4 temp minus heat
+            tolerance setting, or cool to sensor 4 temp plus cool tolerance setting
+            on Saturday and Sunday
+          default:
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - number
+              multiple: false
+              reorder: false
+        sensor_4_ss:
+          name: S-S fourth sensor
+          description: fourth sensor to use for temperature on Saturday and Sunday
+          default: {}
+          selector:
+            entity:
+              filter:
+              - integration: thermostat_scheduler
+                domain:
+                - select
+              multiple: false
+              reorder: false
+  source_url: https://raw.githubusercontent.com/briodan/Thermostat_scheduler/main/blueprints/integration%20based/T6%20-%20set%20sensor%20and%20temp.yaml
+triggers:
+- trigger: time_pattern
+  minutes: !input frequency
+action:
+- variables:
+    temp_current_sensor: !input temp_current_sensor
+    temp_current_target: !input temp_current_target
+    sensor_1: !input sensor_1
+    sensor_2: !input sensor_2
+    sensor_3: !input sensor_3
+    sensor_4: !input sensor_4
+    sensor_1_ss: !input sensor_1_ss
+    sensor_2_ss: !input sensor_2_ss
+    sensor_3_ss: !input sensor_3_ss
+    sensor_4_ss: !input sensor_4_ss
+    target_temp_1: !input target_temp_1
+    target_temp_2: !input target_temp_2
+    target_temp_3: !input target_temp_3
+    target_temp_4: !input target_temp_4
+    target_temp_1_ss: !input target_temp_1_ss
+    target_temp_2_ss: !input target_temp_2_ss
+    target_temp_3_ss: !input target_temp_3_ss
+    target_temp_4_ss: !input target_temp_4_ss
+    time_1: !input time_1
+    time_2: !input time_2
+    time_3: !input time_3
+    time_4: !input time_4
+    time_1_ss: !input time_1_ss
+    time_2_ss: !input time_2_ss
+    time_3_ss: !input time_3_ss
+    time_4_ss: !input time_4_ss
+    default_temp: !input default_temp
+    default_temp_1: '{{ default_temp | float}}'
+    now_time: '{{ now().strftime(''%H:%M'') }}'
+    wd: '{{ now().weekday() }}'
+    is_weekend: '{{ wd >= 5 }}'
+    t1: '{{ states(time_1)[:5] }}'
+    t2: '{{ states(time_2)[:5] }}'
+    t3: '{{ states(time_3)[:5] }}'
+    t4: '{{ states(time_4)[:5] }}'
+    t1ss: '{{ states(time_1_ss)[:5] }}'
+    t2ss: '{{ states(time_2_ss)[:5] }}'
+    t3ss: '{{ states(time_3_ss)[:5] }}'
+    t4ss: '{{ states(time_4_ss)[:5] }}'
+    current_sensor: "{% if is_weekend and t1ss == now_time %}\n  {{ states(sensor_1_ss)
+      }}\n{% elif is_weekend and t2ss == now_time %}\n  {{ states(sensor_2_ss) }}\n{%
+      elif is_weekend and t3ss == now_time %}\n  {{ states(sensor_3_ss) }}\n{% elif
+      is_weekend and t4ss == now_time %}\n  {{ states(sensor_4_ss) }}\n{% elif not
+      is_weekend and t1 == now_time %}\n  {{ states(sensor_1) }}\n{% elif not is_weekend
+      and t2 == now_time %}\n  {{ states(sensor_2) }}\n{% elif not is_weekend and
+      t3 == now_time %}\n  {{ states(sensor_3) }}\n{% elif not is_weekend and t4 ==
+      now_time %}\n  {{ states(sensor_4) }}\n{% else %}\n  ''\n{% endif %}"
+    current_target_temp: "{% if is_weekend and t1ss == now_time %}\n  {{ states(target_temp_1_ss)
+      }}\n{% elif is_weekend and t2ss == now_time %}\n  {{ states(target_temp_2_ss)
+      }}\n{% elif is_weekend and t3ss == now_time %}\n  {{ states(target_temp_3_ss)
+      }}\n{% elif is_weekend and t4ss == now_time %}\n  {{ states(target_temp_4_ss)
+      }}\n{% elif not is_weekend and t1 == now_time %}\n  {{ states(target_temp_1)
+      }}\n{% elif not is_weekend and t2 == now_time %}\n  {{ states(target_temp_2)
+      }}\n{% elif not is_weekend and t3 == now_time %}\n  {{ states(target_temp_3)
+      }}\n{% elif not is_weekend and t4 == now_time %}\n  {{ states(target_temp_4)
+      }}\n{% else %}\n  {{ default_temp }}\n{% endif %}"
+    matched_interval: "{% if is_weekend %}\n  {{ now_time in [t1ss, t2ss, t3ss, t4ss]
+      }}\n{% else %}\n  {{ now_time in [t1, t2, t3, t4] }}\n{% endif %}"
+- action: system_log.write
+  data:
+    message: 'matched_interval: {{ matched_interval }},{{"\n"}} t1: {{ t1 }},{{"\n"}}
+      t2: {{ t2 }},{{"\n"}} t3: {{ t3 }},{{"\n"}} t4: {{ t4 }},{{"\n"}} t1ss: {{ t1ss
+      }},{{"\n"}} t2ss: {{ t2ss }},{{"\n"}} t3ss: {{ t3ss }},{{"\n"}} t4ss: {{ t4ss
+      }},{{"\n"}} wd: {{ wd }},{{"\n"}} is_weekend: {{ is_weekend }},{{"\n"}} now_time:
+      {{ now_time }},{{"\n"}} temp_current_sensor: {{ temp_current_sensor }},{{"\n"}}
+      temp_current_target: {{ temp_current_target }},{{"\n"}} sensor_1: {{ sensor_1
+      }},{{"\n"}} sensor_2: {{ sensor_2 }},{{"\n"}} sensor_3: {{ sensor_3 }},{{"\n"}}
+      sensor_4: {{ sensor_4 }},{{"\n"}} sensor_1_ss: {{ sensor_1_ss }},{{"\n"}} sensor_2_ss:
+      {{ sensor_2_ss }},{{"\n"}} sensor_3_ss: {{ sensor_3_ss }},{{"\n"}} sensor_4_ss:
+      {{ sensor_4_ss }},{{"\n"}} target_temp_1: {{ target_temp_1 }},{{"\n"}} target_temp_2:
+      {{ target_temp_2 }},{{"\n"}} target_temp_3: {{ target_temp_3 }},{{"\n"}} target_temp_4:
+      {{ target_temp_4 }},{{"\n"}} target_temp_1_ss: {{ target_temp_1_ss }},{{"\n"}}
+      target_temp_2_ss: {{ target_temp_2_ss }},{{"\n"}} target_temp_3_ss: {{ target_temp_3_ss
+      }},{{"\n"}} target_temp_4_ss: {{ target_temp_4_ss }},{{"\n"}} default_temp:
+      {{ default_temp }},{{"\n"}}
+
+      '
+    level: debug
+    logger: blueprints.briodan.thermostat
+- choose:
+  - conditions: '{{ matched_interval }}'
+    sequence:
+    - action: select.select_option
+      target:
+        entity_id: !input temp_current_sensor
+      data:
+        option: '{{ current_sensor }}'
+    - action: number.set_value
+      target:
+        entity_id: !input temp_current_target
+      data:
+        value: '{{ current_target_temp }}'
