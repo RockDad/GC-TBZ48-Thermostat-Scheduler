@@ -1,0 +1,14 @@
+{
+  "domain": "cg_thermostat_scheduler",
+  "name": "TC-TBZ48 Thermostat Scheduler",
+  "codeowners": [
+    "@rockdad"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/briodan/thermostat_scheduler",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/briodan/thermostat_scheduler/issues",
+  "requirements": [],
+  "version": "0.0.45"
+}
