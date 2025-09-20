@@ -1,0 +1,14 @@
+{
+  "domain": "gc_thermostat_scheduler",
+  "name": "GC TBZ47 Thermostat Scheduler",
+  "codeowners": [
+    "@rockdad"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/RockDad/GC-TBZ46-Thermostat-Scheduler",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/RockDad/GC-TBZ46-Thermostat-Scheduler/issues",
+  "requirements": [],
+  "version": "0.0.1"
+}
