@@ -1,0 +1,10 @@
+{
+    "config": {
+      "step": {
+        "user": {
+          "title": "Initial Configuration",
+          "description": "Set Temperature Unit, Minimum and Max temperature you want the thermostat to get to, Default Temperature (used for initial setup and in case there is an issue), Primary temp sensor (will be the default for all intervals after setup)"
+        }
+      }
+    }
+  }
