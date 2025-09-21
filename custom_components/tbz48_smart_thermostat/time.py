@@ -36,7 +36,7 @@ async def async_setup_entry(
             key = f"{prefix}_time_{i}"
             time_str = entry.data.get(key, DEFAULT_TIME_STRING)
             entities.append(
-                T6ProgramTimeEntity(
+                TBZ48TimeEntity(
                     name=key.replace("_", " ").title(),
                     unique_id=key,
                     initial_time=parse_time_string(time_str),
@@ -47,7 +47,7 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class T6ProgramTimeEntity(TimeEntity, RestoreEntity):
+class TBZ48TimeEntity(TimeEntity, RestoreEntity):
     def __init__(self, name: str, unique_id: str, initial_time: time, entry_id: str):
         self._attr_name = name
         self._attr_unique_id = unique_id

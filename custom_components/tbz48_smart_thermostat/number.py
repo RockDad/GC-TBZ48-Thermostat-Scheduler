@@ -23,7 +23,7 @@ from .const import (
     UNIT_FARENHEIT,
 )
 
-class BaseT6Number(NumberEntity, RestoreEntity):
+class TBZ48Number(NumberEntity, RestoreEntity):
     def __init__(
         self,
         name: str,
@@ -87,7 +87,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
             key = f"{prefix}_temperature_{i}"
             val = entry.data[key]
             entities.append(
-                BaseT6Number(
+                TBZ48Number(
                     name=key.replace("_", " ").title(),
                     unique_id=key,
                     default=val,
@@ -123,7 +123,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     for key, (default, min_v, max_v, step) in fixed_ranges.items():
         name = key.replace("_", " ").title()
         entities.append(
-            BaseT6Number(
+            TBZ48Number(
                 name=name,
                 unique_id=key,
                 default=default,

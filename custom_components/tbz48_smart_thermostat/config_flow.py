@@ -17,7 +17,7 @@ from .const import (
     UNIT_FARENHEIT,
 )
 
-class T6ProgramConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class TBZ48ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     def __init__(self):
@@ -137,10 +137,10 @@ class T6ProgramConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     @staticmethod
     @callback
     def async_get_options_flow(config_entry):
-        return T6ProgramOptionsFlowHandler(config_entry)
+        return TBZ48OptionsFlowHandler(config_entry)
 
 
-class T6ProgramOptionsFlowHandler(config_entries.OptionsFlow):
+class TBZ48OptionsFlowHandler(config_entries.OptionsFlow):
     def __init__(self, config_entry: config_entries.ConfigEntry):
         self.config_entry = config_entry
         self._data = dict(config_entry.data)

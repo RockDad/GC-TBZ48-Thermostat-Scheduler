@@ -19,7 +19,7 @@ from .const import (
     STATE_DEFAULT,
 )
 
-class BaseT6Select(SelectEntity, RestoreEntity):
+class TBZ48Select(SelectEntity, RestoreEntity):
     def __init__(self, name: str, unique_id: str, options: list[str], initial_option: str, entry_id: str):
         self._attr_name = name.replace("_", " ").title()
         self._attr_unique_id = unique_id
@@ -81,16 +81,16 @@ async def async_setup_entry(
             name = key.replace("_", " ").title()
             selected = entry.options.get(key, entry.data.get(key, default_sensor))
             entities.append(
-                BaseT6Select(name=name, unique_id=key, options=temp_sensors, initial_option=selected, entry_id=entry.entry_id)
+                TBZ48Select(name=name, unique_id=key, options=temp_sensors, initial_option=selected, entry_id=entry.entry_id)
             )
 
     selected = entry.data.get("current_sensor", default_sensor)
     entities.append(
-        BaseT6Select(name="Current Sensor", unique_id="current_sensor", options=temp_sensors, initial_option=selected, entry_id=entry.entry_id)
+        TBZ48Select(name="Current Sensor", unique_id="current_sensor", options=temp_sensors, initial_option=selected, entry_id=entry.entry_id)
     )
 
     entities.append(
-        BaseT6Select(
+        TBZ48Select(
             name="Thermostat State",
             unique_id="thermostat_state",
             options=STATE_OPTIONS,
