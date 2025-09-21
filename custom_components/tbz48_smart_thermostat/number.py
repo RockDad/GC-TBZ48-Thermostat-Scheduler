@@ -14,6 +14,9 @@ from .const import (
     DEFAULT_TOLERANCE_MIN,
     DEFAULT_TOLERANCE_MAX_C, 
     DEFAULT_TOLERANCE_MAX_F,
+    SETPOINT_RANGE_MIN,
+    SETPOINT_RANGE_MAX,
+    STEP_WHOLE,
     STEP_MAJOR,
     STEP_MINOR,
     UNIT_CELSIUS,
@@ -106,12 +109,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         # Tolerances: hardcoded ranges
         "tolerance_cool": (DEFAULT_TOLERANCE, DEFAULT_TOLERANCE_MIN, tolerance_max, STEP_MAJOR),
         "tolerance_heat": (DEFAULT_TOLERANCE, DEFAULT_TOLERANCE_MIN, tolerance_max, STEP_MAJOR),
+        "heat_setpoint_range": (entry.data["heat_setpoint_range"], SETPOINT_RANGE_MIN, SETPOINT_RANGE_MAX,STEP_WHOLE),
+        "cool_setpoint_range": (entry.data["cool_setpoint_range"], SETPOINT_RANGE_MIN, SETPOINT_RANGE_MAX, STEP_WHOLE),
 
         # Temperatures: user-defined limits
         "current_temperature": (entry.data["current_temperature"], temp_min, temp_max, STEP_MINOR),
         "current_target_temperature": (entry.data["current_target_temperature"], temp_min, temp_max, STEP_MAJOR),
-        "adjusted_cool_temperature": (entry.data["adjusted_cool_temperature"], temp_min, temp_max, STEP_MINOR),
-        "adjusted_heat_temperature": (entry.data["adjusted_heat_temperature"], temp_min, temp_max, STEP_MINOR),
+        "adjusted_cool_temperature": (entry.data["adjusted_cool_temperature"], temp_min , temp_max, STEP_MAJOR),
+        "adjusted_heat_temperature": (entry.data["adjusted_heat_temperature"], temp_min, temp_max, STEP_MAJOR),
+
     }
 
     for key, (default, min_v, max_v, step) in fixed_ranges.items():

@@ -48,9 +48,10 @@ class T6ProgramConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self._data["current_target_temperature"] = user_input["temp_default"]
             self._data["adjusted_cool_temperature"] = user_input["temp_default"]
             self._data["adjusted_heat_temperature"] = user_input["temp_default"]
+            self._data["heat_setpoint_range"] = user_input["heat_setpoint_range"]
+            self._data["cool_setpoint_range"] = user_input["cool_setpoint_range"]
             tolerance_max = DEFAULT_TOLERANCE_MAX_F if user_input["temperature_unit"] == UNIT_FARENHEIT else DEFAULT_TOLERANCE_MAX_C
             self._data["tolerance_max"] = tolerance_max
-            #self._data["current_sensor"] = user_input["current_sensor"]
             sensor_list = user_input["sensor_filter"]
             self._data["current_sensor"] = sensor_list[0] if sensor_list else DEFAULT_SENSOR
             self._data["sensor_filter"] = user_input["sensor_filter"]
@@ -67,7 +68,8 @@ class T6ProgramConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Required("temp_min"): vol.Coerce(float),
             vol.Required("temp_max"): vol.Coerce(float),
             vol.Required("temp_default"): vol.Coerce(float),
-            #vol.Required("current_sensor", default=default_sensor): vol.In(sensors),
+            vol.Required("heat_setpoint_range") : vol.Coerce(float),
+            vol.Required("cool_setpoint_range") : vol.Coerce(float),
             vol.Required("sensor_filter", default=[default_sensor]): cv.multi_select(sensors)
         })
 
@@ -105,7 +107,7 @@ class T6ProgramConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input:
             self._data.update(user_input)
-            return self.async_create_entry(title="T6 Program", data=self._data)
+            return self.async_create_entry(title="GC-TBZ48 Thermostat", data=self._data)
 
         schema = {}
         for i in range(1, 5):

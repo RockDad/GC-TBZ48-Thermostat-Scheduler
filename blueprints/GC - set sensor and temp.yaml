@@ -1,6 +1,6 @@
 blueprint:
   name: GC - Time based sensor & target tempature update
-  description: Time based sensor & target tempature update for thermostat_schedule
+  description: Time based sensor & target tempature update for GC-TBZ48 Thermostat Scheduler
   domain: automation
   homeassistant:
     min_version: 2024.10.0
@@ -42,7 +42,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - select
               multiple: false
@@ -53,7 +53,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - number
               multiple: false
@@ -70,7 +70,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - time
               multiple: false
@@ -81,7 +81,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - number
               multiple: false
@@ -92,7 +92,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - select
               multiple: false
@@ -109,7 +109,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - time
               multiple: false
@@ -120,7 +120,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - number
               multiple: false
@@ -131,7 +131,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - select
               multiple: false
@@ -148,7 +148,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - time
               multiple: false
@@ -159,7 +159,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - number
               multiple: false
@@ -170,7 +170,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - select
               multiple: false
@@ -187,7 +187,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - time
               multiple: false
@@ -198,7 +198,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - number
               multiple: false
@@ -209,7 +209,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - select
               multiple: false
@@ -226,7 +226,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - time
               multiple: false
@@ -237,7 +237,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - number
               multiple: false
@@ -248,7 +248,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - select
               multiple: false
@@ -265,7 +265,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - time
               multiple: false
@@ -276,7 +276,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - number
               multiple: false
@@ -287,7 +287,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - select
               multiple: false
@@ -304,7 +304,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - time
               multiple: false
@@ -315,7 +315,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - number
               multiple: false
@@ -326,7 +326,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - select
               multiple: false
@@ -343,7 +343,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - time
               multiple: false
@@ -354,7 +354,7 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - number
               multiple: false
@@ -365,11 +365,11 @@ blueprint:
           selector:
             entity:
               filter:
-                - integration: thermostat_scheduler
+                - integration: tbz48_smart_thermostat
                   domain:
                     - select
               multiple: false
-#  source_url: https://raw.githubusercontent.com/briodan/Thermostat_scheduler/main/blueprints/integration%20based/T6%20-%20set%20sensor%20and%20temp.yaml
+#  source_url: https://raw.githubusercontent.com/briodan/tbz48_smart_thermostat/main/blueprints/integration%20based/T6%20-%20set%20sensor%20and%20temp.yaml
 triggers:
   - trigger: time_pattern
     minutes: !input frequency

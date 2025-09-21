@@ -41,7 +41,7 @@ blueprint:
       selector:
         entity:
           filter:
-            - integration: thermostat_scheduler
+            - integration: tbz48_smart_thermostat
               domain:
                 - select
           multiple: false
@@ -55,7 +55,7 @@ blueprint:
       selector:
         entity:
           filter:
-            - integration: thermostat_scheduler
+            - integration: tbz48_smart_thermostat
               domain:
                 - number
           multiple: false
@@ -69,7 +69,7 @@ blueprint:
       selector:
         entity:
           filter:
-            - integration: thermostat_scheduler
+            - integration: tbz48_smart_thermostat
               domain:
                 - number
           multiple: false
@@ -80,7 +80,7 @@ blueprint:
       selector:
         entity:
           filter:
-            - integration: thermostat_scheduler
+            - integration: tbz48_smart_thermostat
               domain:
                 - select
           multiple: false
@@ -93,7 +93,7 @@ blueprint:
       selector:
         entity:
           filter:
-            - integration: thermostat_scheduler
+            - integration: tbz48_smart_thermostat
               domain:
                 - number
           multiple: false
@@ -104,7 +104,7 @@ blueprint:
       selector:
         entity:
           filter:
-            - integration: thermostat_scheduler
+            - integration: tbz48_smart_thermostat
               domain:
                 - number
           multiple: false
@@ -117,7 +117,7 @@ blueprint:
       selector:
         entity:
           filter:
-            - integration: thermostat_scheduler
+            - integration: tbz48_smart_thermostat
               domain:
                 - number
           multiple: false
@@ -130,11 +130,12 @@ blueprint:
       selector:
         entity:
           filter:
-            - integration: thermostat_scheduler
+            - integration: tbz48_smart_thermostat
               domain:
                 - number
           multiple: false
-  #source_url: https://raw.githubusercontent.com/briodan/Thermostat_scheduler/main/blueprints/integration%20based/T6%20-%20run%20based%20on%20sensor.yaml
+
+  #source_url: https://raw.githubusercontent.com/briodan/tbz48_smart_thermostat/main/blueprints/integration%20based/T6%20-%20run%20based%20on%20sensor.yaml
 triggers:
   - trigger: time_pattern
     minutes: !input frequency
@@ -153,8 +154,8 @@ actions:
       current_temp_helper: !input current_temp_helper
       target_temp_helper: !input target_temp_helper
       target_temp_float: "{{ states(target_temp_helper) }}"
-      heat_setpoint_range_helper: number.thermostat_scheduler_heat_setpoint_range
-      cool_setpoint_rannge_helper: number.thermostat_scheduler_cool_setpoint_range
+      heat_setpoint_range_helper: number.gc_tbz48_smart_thermostat_heat_setpoint_range
+      cool_setpoint_rannge_helper: number.gc_tbz48_smart_thermostat_cool_setpoint_range
       current_sensor: "{{ states(current_sensor_helper) }}"
       current_temp_float: "{{ states(current_sensor) }}"
       default_temp_sensor: !input default_temp_sensor
@@ -192,22 +193,22 @@ actions:
         {{ cool_high_setpoint }},{{"\n"}}heat_temp: {{ heat_temp }},{{"\n"}}
         cool_temp: {{ cool_temp }},{{"\n"}}
       level: debug
-      logger: blueprints.briodan.thermostat
+      logger: blueprints.rockdad.thermostat
   - action: number.set_value
     data:
       value: "{{ current_temp_float }}"
     target:
-      entity_id: number.thermostat_scheduler_current_temperature
+      entity_id: number.gc_tbz48_smart_thermostat_current_temperature
   - action: number.set_value
     data:
       value: "{{ adjusted_cool }}"
     target:
-      entity_id: number.thermostat_scheduler_adjusted_cool_temperature
+      entity_id: number.gc_tbz48_smart_thermostat_adjusted_cool_temperature
   - action: number.set_value
     data:
       value: "{{ adjusted_heat }}"
     target:
-      entity_id: number.thermostat_scheduler_adjusted_heat_temperature
+      entity_id: number.gc_tbz48_smart_thermostat_adjusted_heat_temperature
   - choose:
       - conditions:
           - alias: heat
@@ -216,7 +217,7 @@ actions:
         sequence:
           - action: select.select_option
             target:
-              entity_id: select.thermostat_scheduler_thermostat_state
+              entity_id: select.gc_tbz48_smart_thermostat_thermostat_state
             data:
               option: heat
           - action: climate.set_temperature
@@ -232,7 +233,7 @@ actions:
         sequence:
           - action: select.select_option
             target:
-              entity_id: select.thermostat_scheduler_thermostat_state
+              entity_id: select.gc_tbz48_smart_thermostat_thermostat_state
             data:
               option: cool
           - action: climate.set_temperature
@@ -247,9 +248,9 @@ actions:
           message: |
             no conditions matched
           level: info
-          logger: blueprints.briodan.thermostat
+          logger: blueprints.rockdad.thermostat
       - action: select.select_option
         target:
-          entity_id: select.thermostat_scheduler_thermostat_state
+          entity_id: select.gc_tbz48_smart_thermostat_thermostat_state
         data:
           option: idle
