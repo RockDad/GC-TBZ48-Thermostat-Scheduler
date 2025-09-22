@@ -14,7 +14,7 @@ blueprint:
         frequency:
           name: Frequency
           description: How often to check sensor status?
-            (1 min should be used for time periods not set on 5, 10, or 15 minute start times.)
+            (1 min should be used for time periods start times not set on 5, 10, or 15 minute start times.)
           selector:
             select:
               options:
@@ -35,374 +35,54 @@ blueprint:
               max: 96.0
               step: 1.0
               mode: slider
-        temp_current_sensor:
-          name: Current Temperature Sensor Entity
-          description: This entity will be updated to display the current temp sensor.
-          default: {}
+        default_sensor:
+          name: Fallback Temperature Sensor
+          description: In case of issues selecting a current temperature sensor,
+            the sensor used for controlling the thermostat will be set to this sensor.
+            (This should usually be set to the Thermostat Air Temperature sensor.)
           selector:
             entity:
               filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - select
+                - domain:
+                    - sensor
               multiple: false
-        temp_current_target:
-          name: Current Temperature Target Entity
-          description: This entity will be updated to display the current temperature target.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - number
-              multiple: false
-    time_1_section:
-      name: 1st Weekday (M-F) Time Interval Configuration
-      icon: mdi:clock
-      description: 1st Time interval settings. Define the entities to hold information about the first set of weekday settings.
-      collapsed: true
-      input:
-        time_1:
-          name: Weekday (M-F) First Time Entity
-          description: Define entity to hold the start time of the 1st time interval of a Weekday (M-F) day.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - time
-              multiple: false
-        target_temp_1:
-          name: Weekday (M-F) First Target Temperature Entity
-          description: Define the entity to hold the first weekday time period target temperature.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - number
-              multiple: false
-        sensor_1:
-          name: Weekday (M-F) First Time Period Temperature Sensor Entity
-          description: Define the entity to identify the sensor to use for determining temperature for the 1st Weekday (M-F) Time Period.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - select
-              multiple: false
-    time_2_section:
-      name: 2nd Weekday (M-F) Time Interval Configuration
-      icon: mdi:clock
-      description: 2nd weekday time interval settings. Define the entities to hold information about the second set of weekday settings.
-      collapsed: true
-      input:
-        time_2:
-          name: Weekday (M-F) Second Time Entity
-          description: Define entity to hold the start time of the 2nd time interval of a Weekday (M-F) day.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - time
-              multiple: false
-        target_temp_2:
-          name: Weekday (M-F) Second Target Temperature Entity
-          description: Define the entity to hold the second weekday time period target temperature.
-          default:
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - number
-              multiple: false
-        sensor_2:
-          name: Weekday (M-F) Second Time Period Temperature Sensor Entity
-          description: Define the entity to identify the sensor to use for determining temperature for the 2nd Weekday (M-F) Time Period.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - select
-              multiple: false
-    time_3_section:
-      name: 3rd Weekday (M-F) Time Interval Configuration
-      icon: mdi:clock
-      description: 3rd weekday time interval settings. Define the entities to hold information about the third set of weekday settings.
-      collapsed: true
-      input:
-        time_3:
-          name: Weekday (M-F) Third Time Entity
-          description: Define entity to hold the start time of the 3nd time interval of a Weekday (M-F) day.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - time
-              multiple: false
-        target_temp_3:
-          name: Weekday (M-F) Third Target Temperature Entity
-          description: Define the entity to hold the third weekday time period target temperature.
-          default:
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - number
-              multiple: false
-        sensor_3:
-          name: Weekday (M-F) Third Time Period Temperature Sensor Entity
-          description: Define the entity to identify the sensor to use for determining temperature for the 3rd Weekday (M-F) Time Period.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - select
-              multiple: false
-    time_4_section:
-      name: 4st Weekday (M-F) Time Interval Configuration
-      icon: mdi:clock
-      description: 4th weekday time interval settings. Define the entities to hold information about the fourth set of weekday settings.
-      collapsed: true
-      input:
-        time_4:
-          name: Weekday (M-F) Fourth Time Entity
-          description: Define entity to hold the start time of the 4th time interval of a Weekday (M-F) day.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - time
-              multiple: false
-        target_temp_4:
-          name: Weekday (M-F) Fourth Target Temperature Entity
-          description: Define the entity to hold the fourth weekday time period target temperature.
-          default:
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - number
-              multiple: false
-        sensor_4:
-          name: Weekday (M-F) Fourth Time Perios Temperature Sensor Entity
-          description: Define the entity to identify the sensor to use for determining temperature for the 3rd Weekday (M-F) Time Period.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - select
-              multiple: false
-    time_1_ss_section:
-      name: 1st Weekend (S-S) Time Interval Configuration
-      icon: mdi:clock
-      description: 1st weekend time interval settings. Define the entities to hold information about the first set of weekend settings.
-      collapsed: true
-      input:
-        time_1_ss:
-          name: Weekend (S-S) First Time Entity
-          description: Define entity to hold the 1st time interval of a weekend day.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - time
-              multiple: false
-        target_temp_1_ss:
-          name: Weekend (S-S) First Target Temperature Entity
-          description: Define the entity to hold the start time of the 1st weekend time period target temperature.
-          default:
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - number
-              multiple: false
-        sensor_1_ss:
-          name: Weekend (S-S) First Time Period Temperature Sensor Entity.
-          description: Define the entity to identify the sensor to use for determining temperature for the 1st wekend time period.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - select
-              multiple: false
-    time_2_ss_section:
-      name: 2nd Weekend (S-S) Time Interval Configuration
-      icon: mdi:clock
-      description: 2nd weekend time interval settings. Define the entities to hold information about the second set of weekend settings.
-      collapsed: true
-      input:
-        time_2_ss:
-          name: Weekend (S-S) Second Time Entity
-          description: Define entity to hold the start time of the 2nd time interval of a weekend day.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - time
-              multiple: false
-        target_temp_2_ss:
-          name: Weekend (S-S) Second Target Temperature Entity
-          description: Define the entity to hold the second weekend time period target temperature.
-          default:
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - number
-              multiple: false
-        sensor_2_ss:
-          name: Weekend (S-S) Second Time Period Temperature Sensor Entity.
-          description: Define the entity to identify the sensor to use for determining temperature for the 2nd wekend time period.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - select
-              multiple: false
-    time_3_ss_section:
-      name: 3rd Weekend (S-S) Time Interval Configuration
-      icon: mdi:clock
-      description: 3rd weekend time interval settings. Define the entities to hold information about the third set of weekend settings.
-      collapsed: true
-      input:
-        time_3_ss:
-          name: Weekend (S-S) Third Time Entity
-          description: Define entity to hold the start time of the 3rd time interval of a weekend day.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - time
-              multiple: false
-        target_temp_3_ss:
-          name: Weekend (S-S) Third Target Temperature Entity
-          description: Define the entity to hold the third weekend time period target temperature.
-          default:
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - number
-              multiple: false
-        sensor_3_ss:
-          name: (S-S) Third Time Period Temperature Sensor Entity.
-          description: Define the entity to identify the sensor to use for determining temperature for the 3rd wekend time period.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - select
-              multiple: false
-    time_4_ss_section:
-      name: 4th Weekend (S-S) Time Interval Configuration
-      icon: mdi:clock
-      description: 4th weekend time interval settings. Define the entities to hold information about the fourth set of weekend settings.
-      collapsed: true
-      input:
-        time_4_ss:
-          name: Weekend (S-S) Fourth Time Entity
-          description: Define entity to hold the start time of the 4th time interval of a weekend day.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - time
-              multiple: false
-        target_temp_4_ss:
-          name: Weekend (S-S) Fourth Target Temperature Entity
-          description: Define the entity to hold the fourth weekend time period target temperature.
-          default:
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - number
-              multiple: false
-        sensor_4_ss:
-          name: Fourth Time Period Temperature Sensor Entity.
-          description: Define the entity to identify the sensor to use for determining temperature for the 4th wekend time period.
-          default: {}
-          selector:
-            entity:
-              filter:
-                - integration: tbz48_smart_thermostat
-                  domain:
-                    - select
-              multiple: false
-#  source_url: https://raw.githubusercontent.com/briodan/tbz48_smart_thermostat/main/blueprints/integration%20based/T6%20-%20set%20sensor%20and%20temp.yaml
+
+#  source url: https://github.com/RockDad/GC-TBZ48-Thermostat-Scheduler/blob/main/blueprints/GC%20-%20set%20sensor%20and%20temp.yaml
+
 triggers:
   - trigger: time_pattern
     minutes: !input frequency
 action:
   - variables:
-      temp_current_sensor: !input temp_current_sensor
-      temp_current_target: !input temp_current_target
-      sensor_1: !input sensor_1
-      sensor_2: !input sensor_2
-      sensor_3: !input sensor_3
-      sensor_4: !input sensor_4
-      sensor_1_ss: !input sensor_1_ss
-      sensor_2_ss: !input sensor_2_ss
-      sensor_3_ss: !input sensor_3_ss
-      sensor_4_ss: !input sensor_4_ss
-      target_temp_1: !input target_temp_1
-      target_temp_2: !input target_temp_2
-      target_temp_3: !input target_temp_3
-      target_temp_4: !input target_temp_4
-      target_temp_1_ss: !input target_temp_1_ss
-      target_temp_2_ss: !input target_temp_2_ss
-      target_temp_3_ss: !input target_temp_3_ss
-      target_temp_4_ss: !input target_temp_4_ss
-      time_1: !input time_1
-      time_2: !input time_2
-      time_3: !input time_3
-      time_4: !input time_4
-      time_1_ss: !input time_1_ss
-      time_2_ss: !input time_2_ss
-      time_3_ss: !input time_3_ss
-      time_4_ss: !input time_4_ss
+      temp_current_sensor: select.gc_tbz48_smart_thermostat_current_sensor
+      temp_current_target: number.gc_tbz48_smart_thermostat_current_target_temperature
+      sensor_1: select.gc_tbz48_smart_thermostat_m_f_sensor_1
+      sensor_2: select.gc_tbz48_smart_thermostat_m_f_sensor_2
+      sensor_3: select.gc_tbz48_smart_thermostat_m_f_sensor_3
+      sensor_4: select.gc_tbz48_smart_thermostat_m_f_sensor_4
+      sensor_1_ss: select.gc_tbz48_smart_thermostat_s_s_sensor_1
+      sensor_2_ss: select.gc_tbz48_smart_thermostat_s_s_sensor_2
+      sensor_3_ss: select.gc_tbz48_smart_thermostat_s_s_sensor_3
+      sensor_4_ss: select.gc_tbz48_smart_thermostat_s_s_sensor_4
+      target_temp_1: number.gc_tbz48_smart_thermostat_m_f_temperature_1
+      target_temp_2: number.gc_tbz48_smart_thermostat_m_f_temperature_2
+      target_temp_3: number.gc_tbz48_smart_thermostat_m_f_temperature_3
+      target_temp_4: number.gc_tbz48_smart_thermostat_m_f_temperature_4
+      target_temp_1_ss: number.gc_tbz48_smart_thermostat_s_s_temperature_1
+      target_temp_2_ss: number.gc_tbz48_smart_thermostat_s_s_temperature_2
+      target_temp_3_ss: number.gc_tbz48_smart_thermostat_s_s_temperature_3
+      target_temp_4_ss: number.gc_tbz48_smart_thermostat_s_s_temperature_4
+      time_1: time.gc_tbz48_smart_thermostat_m_f_time_1
+      time_2: time.gc_tbz48_smart_thermostat_m_f_time_2
+      time_3: time.gc_tbz48_smart_thermostat_m_f_time_3
+      time_4: time.gc_tbz48_smart_thermostat_m_f_time_4
+      time_1_ss: time.gc_tbz48_smart_thermostat_s_s_time_1
+      time_2_ss: time.gc_tbz48_smart_thermostat_s_s_time_2
+      time_3_ss: time.gc_tbz48_smart_thermostat_s_s_time_3
+      time_4_ss: time.gc_tbz48_smart_thermostat_s_s_time_4
       default_temp: !input default_temp
-      default_temp_1: "{{ default_temp | float}}"
+      default_temp_float: "{{ default_temp | float}}"
+      default_sensor: !input default_sensor
       now_time: "{{ now().strftime('%H:%M') }}"
       wd: "{{ now().weekday() }}"
       is_weekend: "{{ wd >= 5 }}"
@@ -422,7 +102,7 @@ action:
         is_weekend and t1 == now_time %}\n  {{ states(sensor_1) }}\n{% elif not is_weekend
         and t2 == now_time %}\n  {{ states(sensor_2) }}\n{% elif not is_weekend and
         t3 == now_time %}\n  {{ states(sensor_3) }}\n{% elif not is_weekend and t4 ==
-        now_time %}\n  {{ states(sensor_4) }}\n{% else %}\n  ''\n{% endif %}"
+        now_time %}\n  {{ states(sensor_4) }}\n{% else %}\n  {{ default_sensor }}\n{% endif %}"
       current_target_temp:
         "{% if is_weekend and t1ss == now_time %}\n  {{ states(target_temp_1_ss)
         }}\n{% elif is_weekend and t2ss == now_time %}\n  {{ states(target_temp_2_ss)
@@ -433,9 +113,11 @@ action:
         }}\n{% elif not is_weekend and t3 == now_time %}\n  {{ states(target_temp_3)
         }}\n{% elif not is_weekend and t4 == now_time %}\n  {{ states(target_temp_4)
         }}\n{% else %}\n  {{ default_temp }}\n{% endif %}"
-      matched_interval:
-        "{% if is_weekend %}\n  {{ now_time in [t1ss, t2ss, t3ss, t4ss]
-        }}\n{% else %}\n  {{ now_time in [t1, t2, t3, t4] }}\n{% endif %}"
+      matched_interval: "{% if is_weekend %}
+        {{ now_time in [t1ss, t2ss, t3ss, t4ss] }}
+        {% else %}
+        {{ now_time in [t1, t2, t3, t4] }}
+        {% endif %}"
   - action: system_log.write
     data:
       message:
@@ -454,20 +136,19 @@ action:
         target_temp_2_ss: {{ target_temp_2_ss }},{{"\n"}} target_temp_3_ss: {{ target_temp_3_ss
         }},{{"\n"}} target_temp_4_ss: {{ target_temp_4_ss }},{{"\n"}} default_temp:
         {{ default_temp }},{{"\n"}}
-
         '
       level: debug
-      logger: blueprints.briodan.thermostat
+      logger: blueprints.rockdad.thermostat
   - choose:
       - conditions: "{{ matched_interval }}"
         sequence:
           - action: select.select_option
             target:
-              entity_id: !input temp_current_sensor
+              entity_id: select.gc_tbz48_smart_thermostat_current_sensor
             data:
               option: "{{ current_sensor }}"
           - action: number.set_value
             target:
-              entity_id: !input temp_current_target
+              entity_id: number.gc_tbz48_smart_thermostat_current_target_temperature
             data:
               value: "{{ current_target_temp }}"
