@@ -36,7 +36,7 @@ blueprint:
               - sensor
           multiple: false
     error_boolean_helper:
-      name: Thermpstat State Entity
+      name: Thermostat State Entity
       description: Select the thermostat's State entity
       selector:
         entity:
@@ -108,34 +108,35 @@ blueprint:
               domain:
                 - number
           multiple: false
-    adjusted_temp_cool_helper:
-      name: Adjusted Temp Cool
-      description:
-        This entity will be updated to display the adjusted cool temperature
-        target
-      default: {}
-      selector:
-        entity:
-          filter:
-            - integration: tbz48_smart_thermostat
-              domain:
-                - number
-          multiple: false
-    adjusted_temp_heat_helper:
-      name: Adjusted Temp Heat
-      description:
-        This entity will be updated to display the adjusted heat temperature
-        target
-      default: {}
-      selector:
-        entity:
-          filter:
-            - integration: tbz48_smart_thermostat
-              domain:
-                - number
-          multiple: false
+    #adjusted_temp_cool_helper:
+    #  name: Adjusted Temp Cool
+    #  description:
+    #    This entity will be updated to display the adjusted cool temperature
+    #    target
+    #  default: {}
+    #  selector:
+    #    entity:
+    #      filter:
+    #        - integration: tbz48_smart_thermostat
+    #          domain:
+    #            - number
+    #      multiple: false
+    #adjusted_temp_heat_helper:
+    #  name: Adjusted Temp Heat
+    #  description:
+    #    This entity will be updated to display the adjusted heat temperature
+    #    target
+    #  default: {}
+    #  selector:
+    #    entity:
+    #      filter:
+    #        - integration: tbz48_smart_thermostat
+    #          domain:
+    #            - number
+    #      multiple: false
 
-  #source_url: https://raw.githubusercontent.com/briodan/tbz48_smart_thermostat/main/blueprints/integration%20based/T6%20-%20run%20based%20on%20sensor.yaml
+# source url: https://github.com/RockDad/GC-TBZ48-Thermostat-Scheduler/blob/main/blueprints/GC%20-%20manage%20thermostat.yaml
+
 triggers:
   - trigger: time_pattern
     minutes: !input frequency
@@ -175,8 +176,8 @@ actions:
       cool_temp: >-
         {{ ((target_temp_float + cool_tolerence_float ) - current_temp_float) |
         round(2) }}
-      adjusted_heat: "{{ (target_temp_float - heat_tolerence_float ) | round(2) }}"
-      adjusted_cool: "{{ (target_temp_float + cool_tolerence_float ) | round(2) }}"
+      #adjusted_heat: "{{ (target_temp_float - heat_tolerence_float ) | round(2) }}"
+      #adjusted_cool: "{{ (target_temp_float + cool_tolerence_float ) | round(2) }}"
   - action: system_log.write
     data:
       message: >
@@ -199,16 +200,16 @@ actions:
       value: "{{ current_temp_float }}"
     target:
       entity_id: number.gc_tbz48_smart_thermostat_current_temperature
-  - action: number.set_value
-    data:
-      value: "{{ adjusted_cool }}"
-    target:
-      entity_id: number.gc_tbz48_smart_thermostat_adjusted_cool_temperature
-  - action: number.set_value
-    data:
-      value: "{{ adjusted_heat }}"
-    target:
-      entity_id: number.gc_tbz48_smart_thermostat_adjusted_heat_temperature
+  #- action: number.set_value
+  #  data:
+  #    value: "{{ adjusted_cool }}"
+  #  target:
+  #    entity_id: number.gc_tbz48_smart_thermostat_adjusted_cool_temperature
+  #- action: number.set_value
+  #  data:
+  #    value: "{{ adjusted_heat }}"
+  #  target:
+  #   entity_id: number.gc_tbz48_smart_thermostat_adjusted_heat_temperature
   - choose:
       - conditions:
           - alias: heat
