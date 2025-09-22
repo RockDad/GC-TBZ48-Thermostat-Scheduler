@@ -1,6 +1,6 @@
 blueprint:
-  name: GC - Time based sensor & target tempature update
-  description: Time based sensor & target tempature update for GC-TBZ48 Thermostat Scheduler
+  name: GC - Manage GC-TBZ Time Period Control
+  description: Manage time periods based target temperature update(s) for GC-TBZ48 Smart Thermostat
   domain: automation
   homeassistant:
     min_version: 2024.10.0
@@ -37,18 +37,18 @@ blueprint:
               mode: slider
         default_sensor:
           name: Fallback Temperature Sensor
-          description: In case of issues selecting a current temperature sensor,
+          description: In case of issues selecting a temperature sensor,
             the sensor used for controlling the thermostat will be set to this sensor.
-            (This should usually be set to the Thermostat Air Temperature sensor.)
+            (This should usually be set to the Thermostat's Air Temperature sensor.)
           selector:
             entity:
               filter:
                 - domain:
                     - sensor
               multiple: false
-
+#
 #  source url: https://github.com/RockDad/GC-TBZ48-Thermostat-Scheduler/blob/main/blueprints/GC%20-%20set%20sensor%20and%20temp.yaml
-
+#
 triggers:
   - trigger: time_pattern
     minutes: !input frequency
@@ -118,27 +118,6 @@ action:
         {% else %}
         {{ now_time in [t1, t2, t3, t4] }}
         {% endif %}"
-  - action: system_log.write
-    data:
-      message:
-        'matched_interval: {{ matched_interval }},{{"\n"}} t1: {{ t1 }},{{"\n"}}
-        t2: {{ t2 }},{{"\n"}} t3: {{ t3 }},{{"\n"}} t4: {{ t4 }},{{"\n"}} t1ss: {{ t1ss
-        }},{{"\n"}} t2ss: {{ t2ss }},{{"\n"}} t3ss: {{ t3ss }},{{"\n"}} t4ss: {{ t4ss
-        }},{{"\n"}} wd: {{ wd }},{{"\n"}} is_weekend: {{ is_weekend }},{{"\n"}} now_time:
-        {{ now_time }},{{"\n"}} temp_current_sensor: {{ temp_current_sensor }},{{"\n"}}
-        temp_current_target: {{ temp_current_target }},{{"\n"}} sensor_1: {{ sensor_1
-        }},{{"\n"}} sensor_2: {{ sensor_2 }},{{"\n"}} sensor_3: {{ sensor_3 }},{{"\n"}}
-        sensor_4: {{ sensor_4 }},{{"\n"}} sensor_1_ss: {{ sensor_1_ss }},{{"\n"}} sensor_2_ss:
-        {{ sensor_2_ss }},{{"\n"}} sensor_3_ss: {{ sensor_3_ss }},{{"\n"}} sensor_4_ss:
-        {{ sensor_4_ss }},{{"\n"}} target_temp_1: {{ target_temp_1 }},{{"\n"}} target_temp_2:
-        {{ target_temp_2 }},{{"\n"}} target_temp_3: {{ target_temp_3 }},{{"\n"}} target_temp_4:
-        {{ target_temp_4 }},{{"\n"}} target_temp_1_ss: {{ target_temp_1_ss }},{{"\n"}}
-        target_temp_2_ss: {{ target_temp_2_ss }},{{"\n"}} target_temp_3_ss: {{ target_temp_3_ss
-        }},{{"\n"}} target_temp_4_ss: {{ target_temp_4_ss }},{{"\n"}} default_temp:
-        {{ default_temp }},{{"\n"}}
-        '
-      level: debug
-      logger: blueprints.rockdad.thermostat
   - choose:
       - conditions: "{{ matched_interval }}"
         sequence:
