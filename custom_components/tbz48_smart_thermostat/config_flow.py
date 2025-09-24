@@ -46,6 +46,7 @@ class TBZ48ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             # Automatically assign other fields
             self._data["current_temperature"] = user_input["temp_default"]
             self._data["current_target_temperature"] = user_input["temp_default"]
+            self._data["adjusted_target_temperature"] = user_input["temp_default"]
             self._data["adjusted_cool_temperature"] = user_input["temp_default"]
             self._data["adjusted_heat_temperature"] = user_input["temp_default"]
             self._data["heat_setpoint_range"] = user_input["heat_setpoint_range"]

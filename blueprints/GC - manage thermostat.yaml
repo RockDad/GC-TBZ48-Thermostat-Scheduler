@@ -53,7 +53,7 @@ triggers:
     entity_id:
       - number.gc_tbz48_smart_thermostat_tolerance_cool
       - number.gc_tbz48_smart_thermostat_tolerance_heat
-      - hnumber.gc_tbz48_smart_thermostat_heat_setpoint_range
+      - number.gc_tbz48_smart_thermostat_heat_setpoint_range
       - number.gc_tbz48_smart_thermostat_cool_setpoint_range
       - select.gc_tbz48_smart_thermostat_current_sensor
       - number.gc_tbz48_smart_thermostat_current_target_temperature
@@ -70,17 +70,22 @@ actions:
       cool_setpoint_rannge_helper: number.gc_tbz48_smart_thermostat_cool_setpoint_range
       target_temp_float: "{{ states(target_temp_helper) }}"
       current_sensor: "{{ states(current_sensor_helper) }}"
-      current_temp_float: "{{ states(current_sensor) }}"
+      current_sensor_temp_float: "{{ states(current_sensor) | float | round(2) }}"
       default_temp_sensor: !input default_temp_sensor
       default_temp_float: "{{ states(default_temp_sensor) | float | round(2) }} "
-      current_sensor_delta_float: " {{ current_temp_float - default_temp_float | float | round(2) }} "
+      current_sensor_delta_float: " {{ (current_sensor_temp_float - default_temp_float) | float | round(2) }} "
       temp_adjust: >
-        {% if enable_alt_sensor_strategy %} {{current_sensor_delta_float | float | round(2) }} {% else %} {{ 0 | float | round(2) }} {% endif %}
+        {% if enable_sensor_strategy %}
+          {{current_sensor_delta_float | float | round(2) }} 
+        {% else %}
+          {{ 0 | float | round(2) }}
+        {% endif %}
+      adjusted_target_temp_float: "{{ (target_temp_float - temp_adjust) | float | round(2) }}"
       heat_setpoint_range_float: "{{ states(heat_setpoint_range_helper) | float | round(2) }}"
       cool_setpoint_range_float: "{{ states(cool_setpoint_rannge_helper) | float | round(2) }}"
       heat_low_setpoint: >-
         {% if enable_sensor_strategy %}
-          {{ target_temp_float + temp_adjust | float | round(0) }}
+          {{ adjusted_target_temp_float | float | round(0) }}
         {% else %} 
           {{ target_temp_float }}
         {% endif %}
@@ -88,29 +93,30 @@ actions:
         {{ (heat_low_setpoint + heat_setpoint_range_float) }}
       cool_high_setpoint: >-
         {% if enable_sensor_strategy %}
-          {{ target_temp_float - temp_adjust | float | round(0) }}
+          {{ adjusted_target_temp_float | float | round(0) }}
         {% else %} 
           {{ target_temp_float }}
         {% endif %}
       cool_low_setpoint: >-
         {{ (cool_high_setpoint - cool_setpoint_range_float) }}
-      alt_heat_low_setpoint: "{{ target_temp_float + temp_adjust | float | round(0) }}"
-      alt_heat_high_setpoint: "{{ (alt_heat_low_setpoint + heat_setpoint_range_float) | float | round(0) }}"
-      alt_cool_high_setpoint: "{{ target_temp_float - temp_adjust |  float | round(0) }}"
-      alt_cool_low_setpoint: "{{ (alt_cool_high_setpoint - cool_setpoint_range_float) | float | round(0) }}"
+      #
       cool_tolerence_float: "{{ states[cool_tolerance_helper].state | float }}"
       heat_tolerence_float: "{{ states[heat_tolerance_helper].state | float }}"
+      #
+      # Use the tolerences to calculate need to change thermostat settings
+      #
       heat_temp: >-
-        {{ ((target_temp_float - heat_tolerence_float ) - current_temp_float) + temp_adjust |
+        {{ ((adjusted_target_temp_float - heat_tolerence_float) - current_sensor_temp_float ) |
         round(2) }}
       cool_temp: >-
-        {{ ((target_temp_float + cool_tolerence_float ) - current_temp_float - temp_adjust) |
+        {{ ((adjusted_target_temp_float + cool_tolerence_float ) - current_sensor_temp_float) |
         round(2) }}
+      #
       adjusted_heat: "{{ (target_temp_float - heat_tolerence_float ) + temp_adjust | round(2) }}"
-      adjusted_cool: "{{ (target_temp_float + cool_tolerence_float ) - temp_adjust | round(2) }}"
+      adjusted_cool: "{{ (target_temp_float + cool_tolerence_float ) + temp_adjust | round(2) }}"
   - action: number.set_value
     data:
-      value: "{{ current_temp_float }}"
+      value: "{{ current_sensor_temp_float }}"
     target:
       entity_id: number.gc_tbz48_smart_thermostat_current_temperature
   - action: number.set_value
@@ -123,6 +129,11 @@ actions:
       value: "{{ adjusted_heat }}"
     target:
       entity_id: number.gc_tbz48_smart_thermostat_adjusted_heat_temperature
+  - action: number.set_value
+    data:
+      value: "{{ adjusted_target_temp_float }}"
+    target:
+      entity_id: number.gc_tbz48_smart_thermostat_adjusted_target_temperature
   - choose:
       - conditions:
           - alias: heat
