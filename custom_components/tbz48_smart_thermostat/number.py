@@ -115,6 +115,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         # Temperatures: user-defined limits
         "current_temperature": (entry.data["current_temperature"], temp_min, temp_max, STEP_MINOR),
         "current_target_temperature": (entry.data["current_target_temperature"], temp_min, temp_max, STEP_MAJOR),
+        "adjusted_target_temperature": (temp_default, temp_min, temp_max, STEP_MAJOR),
         "adjusted_cool_temperature": (entry.data["adjusted_cool_temperature"], temp_min , temp_max, STEP_MAJOR),
         "adjusted_heat_temperature": (entry.data["adjusted_heat_temperature"], temp_min, temp_max, STEP_MAJOR),
 
