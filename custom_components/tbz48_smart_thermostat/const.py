@@ -1,5 +1,15 @@
 DOMAIN = "tbz48_smart_thermostat"
-PLATFORMS = ["select", "number", "time"]
+PLATFORMS = [
+    "number",
+    "select",
+    "time",
+]
+
+INTEGRATION_OPTIONS = [
+    "enable_multi_room_strategy",
+    "enable_eco_temperatures",
+    "enable_external_sensor_strategy",
+]
 
 # Device
 DEVICE_NAME = "GC-TBZ48 Smart Thermostat"
@@ -17,6 +27,10 @@ DEFAULT_TOLERANCE_MAX_C = 5.0
 DEFAULT_TOLERANCE_MAX_F = 10
 SETPOINT_RANGE_MIN = 3
 SETPOINT_RANGE_MAX = 15
+ECO_RANGE_MIN = 55
+ECO_RANGE_MAX = 85
+DEFAULT_ECO_MIN = ECO_RANGE_MIN + 5
+DEFAULT_ECO_MAX = ECO_RANGE_MAX - 5
 
 # Time Settings
 DEFAULT_TIME_STRING = "06:00"
@@ -32,7 +46,14 @@ STATE_OPTIONS = ["idle", "heat", "cool"]
 STATE_DEFAULT = "idle"
 
 # HBZ48  Thermostat State
-TBZ48__STATE_OPTIONS = ["idle", "heating", "cooling", "off", "preheating", "drying", "fan",  
-"defrosting"]
+TBZ48__STATE_OPTIONS = [
+    "idle",
+    "heating",
+    "cooling",
+    "off",
+    "preheating",
+    "drying",
+    "fan",
+    "defrosting",
+]
 TBZ48_STATE_DEFAULT = "idle"
-
