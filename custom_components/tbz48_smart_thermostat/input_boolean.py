@@ -79,9 +79,10 @@ async def async_setup_entry(
 
     for key in INTEGRATION_OPTIONS:
         name = key.replace("_", " ").title()
-        # name = DOMAIN + "_" + name
         name_technical = DOMAIN + "_" + key
+
         _LOGGER.info("Creating input_boolean entity: %s", key)
+
         ib_data = {
             "id": name_technical,
             "name": name,
