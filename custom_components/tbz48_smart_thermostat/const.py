@@ -42,11 +42,11 @@ UNIT_CELSIUS = "°C"
 UNIT_FARENHEIT = "°F"
 
 # Thermostat state
-STATE_OPTIONS = ["idle", "heat", "cool"]
+STATE_OPTIONS = ["idle", "heat", "cool", "eco"]
 STATE_DEFAULT = "idle"
 
 # HBZ48  Thermostat State
-TBZ48__STATE_OPTIONS = [
+TBZ48_STATE_OPTIONS = [
     "idle",
     "heating",
     "cooling",
