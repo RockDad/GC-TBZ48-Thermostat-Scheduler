@@ -1,0 +1,236 @@
+blueprint:
+  name: Manage CG-TBZ48 Z-Wave Thermostat V2
+  description: Provide Smart Thermostat features for a GC-TBZ48 Z-Wave Thermostat
+  domain: automation
+  homeassistant:
+    min_version: 2024.10.0
+  input:
+    frequency:
+      name: Frequency
+      description:
+        how often to check sensor status? 1, 5 or 10 minues. 1 min should
+        be used for testing purposes with a generic thermostat
+      selector:
+        select:
+          options:
+            - /1
+            - /5
+            - /10
+          custom_value: false
+          multiple: false
+    thermostat:
+      name: Thermostat
+      description: Select the Thermostat
+      selector:
+        entity:
+          filter:
+            - domain:
+                - climate
+          multiple: false
+    default_temp_sensor:
+      name: Select the thermostat's internal air temperature sensor
+      selector:
+        entity:
+          filter:
+            domain:
+              - sensor
+          multiple: false
+
+#
+# source url: https://github.com/RockDad/GC-TBZ48-Thermostat-Scheduler/blob/main/blueprints/GC%20-%20manage%20thermostat.yaml
+#
+triggers:
+  - trigger: time_pattern
+    minutes: !input frequency
+  - trigger: state
+    entity_id:
+      - number.gc_tbz48_smart_thermostat_tolerance_cool
+      - number.gc_tbz48_smart_thermostat_tolerance_heat
+      - number.gc_tbz48_smart_thermostat_heat_setpoint_range
+      - number.gc_tbz48_smart_thermostat_cool_setpoint_range
+      - select.gc_tbz48_smart_thermostat_current_sensor
+      - number.gc_tbz48_smart_thermostat_current_target_temperature
+      - input_boolean.tbz48_smart_thermostat_enable_multi_room_strategy
+      - input_boolean.tbz48_smart_thermostat_enable_eco_temperatures
+actions:
+  - variables:
+      enable_sensor_strategy_helper: input_boolean.tbz48_smart_thermostat_enable_multi_room_strategy
+      enable_sensor_strategy: >
+        {% if states(enable_sensor_strategy_helper) == "on" %}
+          True
+        {% else %}
+          False
+        {% endif %}
+      enable_eco_mode_helper: input_boolean.tbz48_smart_thermostat_enable_eco_temperatures
+      enable_eco_mode: >
+        {% if states(enable_eco_mode_helper) == "on" %}
+          True
+        {% else %}
+          False
+        {% endif %}
+      ft_physical_state: " {{ state_attr('climate.freedonia_thermostat', 'hvac_action' ) }}"
+      thermostat_state_helper: select.gc_tbz48_smart_thermostat_thermostat_state
+      thermostat_state: " {{ states(thermostat_state_helper) }} "
+      cool_tolerance_helper: number.gc_tbz48_smart_thermostat_tolerance_cool
+      heat_tolerance_helper: number.gc_tbz48_smart_thermostat_tolerance_heat
+      current_sensor_helper: select.gc_tbz48_smart_thermostat_current_sensor
+      current_temp_helper: number.gc_tbz48_smart_thermostat_current_temperature
+      target_temp_helper: number.gc_tbz48_smart_thermostat_current_target_temperature
+      heat_setpoint_range_helper: number.gc_tbz48_smart_thermostat_heat_setpoint_range
+      cool_setpoint_rannge_helper: number.gc_tbz48_smart_thermostat_cool_setpoint_range
+      target_temp_float: "{{ states(target_temp_helper) }}"
+      current_sensor: "{{ states(current_sensor_helper) }}"
+      current_sensor_temp_float: "{{ states(current_sensor) | float | round(2) }}"
+      default_temp_sensor: !input default_temp_sensor
+      default_temp_float: "{{ states(default_temp_sensor) | float | round(2) }} "
+      current_sensor_delta_float: " {{ (current_sensor_temp_float - default_temp_float) | float | round(2) }} "
+      temp_adjust: >
+        {% if enable_sensor_strategy %}
+          {{current_sensor_delta_float | float | round(2) }} 
+        {% else %}
+          {{ 0 | float | round(2) }}
+        {% endif %}
+      adjusted_target_temp_float: "{{ (target_temp_float - temp_adjust) | float | round(2) }}"
+      heat_setpoint_range_float: "{{ states(heat_setpoint_range_helper) | float | round(2) }}"
+      cool_setpoint_range_float: "{{ states(cool_setpoint_rannge_helper) | float | round(2) }}"
+      heat_low_setpoint: >-
+        {% if enable_sensor_strategy %}
+          {{ adjusted_target_temp_float | float | round(0) }}
+        {% else %} 
+          {{ target_temp_float }}
+        {% endif %}
+      heat_high_setpoint: >-
+        {{ (heat_low_setpoint + heat_setpoint_range_float) }}
+      cool_high_setpoint: >-
+        {% if enable_sensor_strategy %}
+          {{ adjusted_target_temp_float | float | round(0) }}
+        {% else %} 
+          {{ target_temp_float }}
+        {% endif %}
+      cool_low_setpoint: >-
+        {{ (cool_high_setpoint - cool_setpoint_range_float) }}
+      #
+      cool_tolerence_float: "{{ states[cool_tolerance_helper].state | float }}"
+      heat_tolerence_float: "{{ states[heat_tolerance_helper].state | float }}"
+      eco_temp_min_helper: number.gc_tbz48_smart_thermostat_eco_temperature_min
+      eco_temperature_min: "{{ states(eco_temp_min_helper) | float | round(0) }}"
+      eco_temp_max_helper: number.gc_tbz48_smart_thermostat_eco_temperature_max
+      eco_temperature_max: "{{ states(eco_temp_max_helper) | float | round(0) }}"
+      #
+      # Use the tolerences to calculate need to change thermostat settings
+      #
+      heat_temp: >-
+        {{ ((adjusted_target_temp_float - heat_tolerence_float) - current_sensor_temp_float ) |
+        round(2) }}
+      cool_temp: >-
+        {{ ((adjusted_target_temp_float + cool_tolerence_float ) - current_sensor_temp_float) |
+        round(2) }}
+      #
+      adjusted_heat: "{{ (target_temp_float - heat_tolerence_float ) + temp_adjust | round(2) }}"
+      adjusted_cool: "{{ (target_temp_float + cool_tolerence_float ) + temp_adjust | round(2) }}"
+  - action: number.set_value
+    data:
+      value: "{{ current_sensor_temp_float }}"
+    target:
+      entity_id: number.gc_tbz48_smart_thermostat_current_temperature
+  - action: number.set_value
+    data:
+      value: "{{ adjusted_cool }}"
+    target:
+      entity_id: number.gc_tbz48_smart_thermostat_adjusted_cool_temperature
+  - action: number.set_value
+    data:
+      value: "{{ adjusted_heat }}"
+    target:
+      entity_id: number.gc_tbz48_smart_thermostat_adjusted_heat_temperature
+  - action: number.set_value
+    data:
+      value: "{{ adjusted_target_temp_float }}"
+    target:
+      entity_id: number.gc_tbz48_smart_thermostat_adjusted_target_temperature
+  - if:
+      - condition: template
+        value_template: '{{ enable_eco_mode and (thermostat_state != "eco") }}'
+    then:
+      - action: select.select_option
+        metadata: {}
+        data:
+          option: eco
+        target:
+          entity_id: select.gc_tbz48_smart_thermostat_thermostat_state
+      - action: climate.set_temperature
+        metadata: {}
+        data:
+          target_temp_high: "{{ eco_temperature_max }}"
+          target_temp_low: "{{ eco_temperature_min }}"
+        target:
+          entity_id: !input thermostat
+      - stop: Entering ECO Mode
+  - if:
+      - condition: template
+        value_template: '{{ not (enable_eco_mode) and (thermostat_state == "eco") }}'
+    then:
+      - variables:
+          thermostat_state: "idle"
+      - action: select.select_option
+        metadata: {}
+        data:
+          option: idle
+        target:
+          entity_id: select.gc_tbz48_smart_thermostat_thermostat_state
+  - choose:
+      - conditions:
+          - alias: heat
+            condition: template
+            value_template: "{{ (heat_temp > 0) and (thermostat_state != 'eco') }}"
+        sequence:
+          - action: select.select_option
+            target:
+              entity_id: select.gc_tbz48_smart_thermostat_thermostat_state
+            data:
+              option: heat
+          - action: climate.set_temperature
+            data:
+              target_temp_low: "{{ heat_low_setpoint }}"
+              target_temp_high: "{{ heat_high_setpoint }}"
+            target:
+              entity_id: !input thermostat
+      - conditions:
+          - alias: cool
+            condition: template
+            value_template: "{{ (cool_temp < 0) and (thermostat_state != 'eco') }}"
+        sequence:
+          - action: select.select_option
+            target:
+              entity_id: select.gc_tbz48_smart_thermostat_thermostat_state
+            data:
+              option: cool
+          - action: climate.set_temperature
+            data:
+              target_temp_low: "{{ cool_low_setpoint }}"
+              target_temp_high: "{{ cool_high_setpoint }}"
+            target:
+              entity_id: !input thermostat
+      - conditions:
+          - alias: eco
+            condition: template
+            value_template: "{{ (thermostat_state == 'eco') }}"
+        sequence:
+          - action: system_log.write
+            data:
+              message: |
+                ECO Mode
+              level: info
+              logger: blueprints.rockdad.thermostat
+    default:
+      - action: system_log.write
+        data:
+          message: |
+            no conditions matched
+          level: info
+          logger: blueprints.rockdad.thermostat
+      - action: select.select_option
+        target:
+          entity_id: select.gc_tbz48_smart_thermostat_thermostat_state
+        data:
+          option: idle
