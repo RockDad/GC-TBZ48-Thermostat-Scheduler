@@ -1,0 +1,427 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.freedonia_smart_thermostat",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "title": "Home",
+          "header": {
+            "card": {
+              "type": "markdown",
+              "text_only": true,
+              "content": "# Freedonia Smart Thermostat\n"
+            }
+          },
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "thermostat",
+                  "entity": "climate.freedonia_thermostat"
+                }
+              ],
+              "column_span": 1
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.freedonia_thermostat_air_temperature",
+                      "secondary_info": "none",
+                      "name": " Temperature (Hallway)",
+                      "icon": "mdi:home-thermometer-outline"
+                    },
+                    {
+                      "entity": "sensor.target_temperature",
+                      "icon": "mdi:thermostat",
+                      "name": "Current Target Temperature "
+                    },
+                    {
+                      "entity": "sensor.thermostat_current_status",
+                      "icon": "mdi:thermostat"
+                    },
+                    {
+                      "entity": "sensor.sensor_location"
+                    },
+                    {
+                      "entity": "sensor.sensor_temperature"
+                    }
+                  ],
+                  "grid_options": {
+                    "columns": "full"
+                  },
+                  "title": "Current Status of GC-TBZ48 Smart Thermometer",
+                  "theme": "Draculaish"
+                }
+              ],
+              "column_span": 2
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_boolean.tbz48_smart_thermostat_enable_multi_room_strategy",
+                      "name": "Enable Multi Room Sensor Strategy"
+                    },
+                    {
+                      "entity": "input_boolean.tbz48_smart_thermostat_enable_eco_temperatures",
+                      "name": "Enable ECO Mode"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_eco_temperature_min",
+                      "name": "ECO Temperature Min"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_eco_temperature_max",
+                      "name": "ECO Temperature Max"
+                    },
+                    {
+                      "entity": "input_boolean.tbz48_enable_advanced_settings",
+                      "name": "Enable Advanced Settings",
+                      "icon": "mdi:toggle-switch-off-outline"
+                    },
+                    {
+                      "entity": "input_boolean.tbz48_enable_weekday_configuration",
+                      "name": "Show Weekday Time/Temperature Settings"
+                    },
+                    {
+                      "entity": "input_boolean.tbz48_enable_weekend_configuration",
+                      "name": "Show Weekend Time/Temperature Settings"
+                    }
+                  ],
+                  "title": "Thermostat Control Parameters",
+                  "grid_options": {
+                    "columns": "full"
+                  },
+                  "theme": "Graphite"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_cool_setpoint_range",
+                      "name": "Cool Setpoint Range",
+                      "icon": "mdi:thermostat-cog",
+                      "secondary_info": "last-changed"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_heat_setpoint_range",
+                      "name": "Heat Setpoint Range",
+                      "secondary_info": "last-changed",
+                      "icon": "mdi:thermostat-cog"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_tolerance_cool"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_tolerance_heat"
+                    },
+                    {
+                      "entity": "input_boolean.tbz48_enable_internal_params",
+                      "name": "Show Internal Parameters"
+                    }
+                  ],
+                  "title": "Advanced Thermostat Control Parameters",
+                  "grid_options": {
+                    "columns": "full"
+                  },
+                  "theme": "Graphite",
+                  "visibility": [
+                    {
+                      "condition": "state",
+                      "entity": "input_boolean.tbz48_enable_advanced_settings",
+                      "state": "on"
+                    }
+                  ]
+                }
+              ],
+              "column_span": 2
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_adjusted_cool_temperature",
+                      "name": "Adjusted Cool Temperature"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_adjusted_heat_temperature",
+                      "name": "Adjjusted Heat Temperature"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_adjusted_target_temperature",
+                      "name": "Adjusted Target Temperature"
+                    }
+                  ],
+                  "title": "Monitor Thermostat Internal Parameters",
+                  "grid_options": {
+                    "columns": "full"
+                  },
+                  "theme": "Graphite"
+                }
+              ],
+              "column_span": 2,
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "input_boolean.tbz48_enable_internal_params",
+                  "state": "on"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "time.gc_tbz48_smart_thermostat_m_f_time_1",
+                      "name": "On Monday through Friday starting at:"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_m_f_temperature_1",
+                      "name": "Set Temperature to:"
+                    },
+                    {
+                      "entity": "select.gc_tbz48_smart_thermostat_m_f_sensor_1",
+                      "name": "Using this sensor to determine the temperature:",
+                      "secondary_info": "none"
+                    },
+                    {
+                      "entity": "time.gc_tbz48_smart_thermostat_m_f_time_2",
+                      "name": "On Monday through Friday starting at:"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_m_f_temperature_2",
+                      "name": "Set Temperature to:"
+                    },
+                    {
+                      "entity": "select.gc_tbz48_smart_thermostat_m_f_sensor_2",
+                      "name": "Using this sensor to determine the temperature:"
+                    },
+                    {
+                      "entity": "time.gc_tbz48_smart_thermostat_m_f_time_3",
+                      "name": "On Monday through Friday starting at:"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_m_f_temperature_3",
+                      "name": "Set Temperature to:"
+                    },
+                    {
+                      "entity": "select.gc_tbz48_smart_thermostat_m_f_sensor_3",
+                      "name": "Using this sensor to determine the temperature:"
+                    },
+                    {
+                      "entity": "time.gc_tbz48_smart_thermostat_m_f_time_4",
+                      "name": "On Monday through Friday starting at:"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_m_f_temperature_4",
+                      "name": "Set Temperature to:"
+                    },
+                    {
+                      "entity": "select.gc_tbz48_smart_thermostat_m_f_sensor_4",
+                      "name": "Using this sensor to determine the temperature:"
+                    }
+                  ],
+                  "title": "Weekday Schedule",
+                  "grid_options": {
+                    "columns": "full",
+                    "rows": "auto"
+                  },
+                  "show_header_toggle": true,
+                  "state_color": true,
+                  "theme": "Fluent Slate"
+                }
+              ],
+              "column_span": 2,
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "input_boolean.tbz48_enable_weekday_configuration",
+                  "state": "on"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "time.gc_tbz48_smart_thermostat_s_s_time_1",
+                      "name": "On Saturday and Sunday starting at:"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_s_s_temperature_1",
+                      "name": "Set Temperature to:"
+                    },
+                    {
+                      "entity": "select.gc_tbz48_smart_thermostat_s_s_sensor_1",
+                      "name": "Using this sensor to determine the temperature:"
+                    },
+                    {
+                      "entity": "time.gc_tbz48_smart_thermostat_s_s_time_2",
+                      "name": "On Saturday and Sunday starting at:"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_s_s_temperature_2",
+                      "name": "Set Temperature to:"
+                    },
+                    {
+                      "entity": "select.gc_tbz48_smart_thermostat_s_s_sensor_2",
+                      "name": "Using this sensor to determine the temperature:"
+                    },
+                    {
+                      "entity": "time.gc_tbz48_smart_thermostat_s_s_time_3",
+                      "name": "On Saturday and Sunday starting at:"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_s_s_temperature_3",
+                      "name": "Set Temperature to:"
+                    },
+                    {
+                      "entity": "select.gc_tbz48_smart_thermostat_s_s_sensor_3",
+                      "name": "Using this sensor to determine the temperature:"
+                    },
+                    {
+                      "entity": "time.gc_tbz48_smart_thermostat_s_s_time_4",
+                      "name": "On Saturday and Sunday starting at:"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_s_s_temperature_4",
+                      "name": "Set Temperature to:"
+                    },
+                    {
+                      "entity": "select.gc_tbz48_smart_thermostat_s_s_sensor_4",
+                      "name": "Using this sensor to determine the temperature:"
+                    }
+                  ],
+                  "title": "Weekend Schedule",
+                  "grid_options": {
+                    "columns": "full"
+                  },
+                  "show_header_toggle": false,
+                  "state_color": false,
+                  "theme": "Fluent Green"
+                }
+              ],
+              "column_span": 2,
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "input_boolean.tbz48_enable_weekend_configuration",
+                  "state": "on"
+                }
+              ]
+            }
+          ],
+          "cards": [],
+          "type": "sections",
+          "max_columns": 4
+        },
+        {
+          "type": "sections",
+          "max_columns": 4,
+          "title": "Current Temperatures",
+          "path": "current-temperatures",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.freedonia_thermostat_air_temperature",
+                      "name": "Hallway (Thermostat)",
+                      "secondary_info": "entity-id"
+                    },
+                    {
+                      "entity": "sensor.home_assistant_voice_0a47b0_temperature",
+                      "name": "Bedroom",
+                      "secondary_info": "entity-id"
+                    },
+                    {
+                      "entity": "sensor.home_assistant_voice_0a1adc_temperature",
+                      "secondary_info": "entity-id"
+                    },
+                    {
+                      "entity": "sensor.home_assistant_voice_0a390d_temperature",
+                      "secondary_info": "entity-id"
+                    },
+                    {
+                      "entity": "sensor.sky_bryce_airport_temperature",
+                      "name": "Sky Bryce Airport"
+                    }
+                  ],
+                  "title": "Current Temperatures",
+                  "grid_options": {
+                    "columns": "full"
+                  },
+                  "theme": "Catppuccin Auto Latte Mocha",
+                  "show_header_toggle": false,
+                  "state_color": false,
+                  "footer": {
+                    "type": "graph",
+                    "entity": "sensor.freedonia_thermostat_air_temperature"
+                  }
+                }
+              ],
+              "column_span": 2
+            }
+          ]
+        },
+        {
+          "type": "sections",
+          "max_columns": 4,
+          "title": "Heat Pump Usage",
+          "path": "heat-pump-usage",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.hvac_heat_on_time",
+                      "name": "Daily Heat Time"
+                    },
+                    {
+                      "entity": "sensor.hvac_cool_on_time",
+                      "name": "Daily Cool Time"
+                    },
+                    {
+                      "entity": "sensor.hvac_monthly_heat_on_time",
+                      "name": "Monthly Heat Time"
+                    },
+                    {
+                      "entity": "sensor.hvac_monthly_cool_on_time",
+                      "name": "Monthly Cool Time"
+                    }
+                  ],
+                  "title": "Heat Pump Usage"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

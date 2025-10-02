@@ -1,0 +1,90 @@
+- platform: template
+  sensors:
+    freedonia_hvac_status:
+      friendly_name: "HVAC Status"
+      unique_id: hvac_freedonia_248
+      value_template: >-
+        {%- if is_state('climate.freedonia_thermostat', 'off') %}
+          off
+        {% elif is_state_attr('climate.freedonia_thermostat', 'hvac_action', 'idle') or 
+                is_state_attr('climate.freedonia_thermostat', 'hvac_action', 'fan') %}
+          idle  
+        {% elif is_state_attr('climate.freedonia_thermostat', 'hvac_action', 'cooling') %}
+          cool 
+        {% elif is_state_attr('climate.freedonia_thermostat', 'hvac_action', 'heating') %}
+          heat 
+        {% else %}
+          unknown
+        {%- endif %}
+      icon_template: >-
+        {% if is_state('sensor.freedonia_hvac_status',"idle") %}
+          mdi:power-on
+        {% elif is_state('sensor.freedonia_hvac_status',"cool") %}
+          mdi:snowflake
+        {% elif is_state('sensor.freedonia_hvac_status',"heat") %}
+          mdi:fire
+        {% else %}
+          mdi:octagon
+        {% endif %}
+# Heating Stats
+- platform: history_stats
+  name: HVAC Heat ON time
+  entity_id: sensor.freedonia_hvac_status
+  unique_id: hvac_freedonia_248_heat_on_time
+  state: "heat"
+  type: time
+  start: "{{ today_at() }}"
+  end: "{{ now() }}"
+  #duration:
+  #  hours: 24
+- platform: history_stats
+  name: HVAC Heat ON duty cycle
+  entity_id: sensor.freedonia_hvac_status
+  unique_id: hvac_freedonia_248_heat_on_duty_cycle
+  state: "heat"
+  type: ratio
+  start: "{{ today_at() }}"
+  end: "{{ now() }}"
+  #duration:
+  #  hours: 24
+- platform: history_stats
+  name: HVAC Heat ON count
+  entity_id: sensor.freedonia_hvac_status
+  unique_id: hvac_freedonia_248_heat_on_count
+  state: "heat"
+  type: count
+  start: "{{ today_at() }}"
+  end: "{{ now() }}"
+  #duration:
+  #  hours: 24
+# Cooling Stats
+- platform: history_stats
+  name: HVAC Cool ON time
+  entity_id: sensor.freedonia_hvac_status
+  unique_id: hvac_freedonia_248_cool_on_time
+  state: "cool"
+  type: time
+  start: "{{ today_at() }}"
+  end: "{{ now() }}"
+  #duration:
+  #  hours: 24
+- platform: history_stats
+  name: HVAC Cool ON duty cycle
+  entity_id: sensor.freedonia_hvac_status
+  unique_id: hvac_freedonia_248_cool_on_duty_cycle
+  state: "cool"
+  type: ratio
+  start: "{{ today_at() }}"
+  end: "{{ now() }}"
+  #duration:
+  #  hours: 24
+- platform: history_stats
+  name: HVAC Cool ON count
+  entity_id: sensor.freedonia_hvac_status
+  unique_id: hvac_freedonia_248_cool_on_count
+  state: "cool"
+  type: count
+  start: "{{ today_at() }}"
+  end: "{{ now() }}"
+  #duration:
+  #  hours: 24
