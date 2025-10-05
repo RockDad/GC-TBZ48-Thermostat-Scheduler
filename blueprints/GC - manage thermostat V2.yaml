@@ -35,7 +35,13 @@ blueprint:
             domain:
               - sensor
           multiple: false
-
+    external_sensor:
+      name: Select the sensor for measuring the outside temperature
+      selector:
+        entity:
+          filter:
+            domain: -sensor
+          multiple: false
 #
 # source url: https://github.com/RockDad/GC-TBZ48-Thermostat-Scheduler/blob/main/blueprints/GC%20-%20manage%20thermostat.yaml
 #
@@ -52,8 +58,23 @@ triggers:
       - number.gc_tbz48_smart_thermostat_current_target_temperature
       - input_boolean.tbz48_smart_thermostat_enable_multi_room_strategy
       - input_boolean.tbz48_smart_thermostat_enable_eco_temperatures
+  - trigger: state
+    id: "eco_temp_change"
+    entity_id:
+      - number.gc_tbz48_smart_thermostat_eco_temperature_max
+      - number.gc_tbz48_smart_thermostat_eco_temperature_min
+  - trigger: state
+    id: "outdoor_mode_change"
+    entity_id:
+      - input_boolean.tbz48_smart_thermostat_enable_external_sensor_strategy
+  - trigger: state
+    id: "outdoor_mode_temp_change"
+    entity_id:
+      - number.gc_tbz48_smart_thermostat_external_temperature_min
+      - number.gc_tbz48_smart_thermostat_external_temperature_max
 actions:
   - variables:
+      # Options
       enable_sensor_strategy_helper: input_boolean.tbz48_smart_thermostat_enable_multi_room_strategy
       enable_sensor_strategy: >
         {% if states(enable_sensor_strategy_helper) == "on" %}
@@ -68,6 +89,28 @@ actions:
         {% else %}
           False
         {% endif %}
+      enable_outside_mode_helper: input_boolean.tbz48_smart_thermostat_enable_external_sensor_strategy
+      enable_outside_mode: >
+        {% if states(enable_outside_mode_helper) == "on" %}
+          True
+        {% else %}
+          False
+        {% endif %}
+      # End Options Setup
+      # ECO Mode Variables
+      eco_temp_min_helper: number.gc_tbz48_smart_thermostat_eco_temperature_min
+      eco_temperature_min: "{{ states(eco_temp_min_helper) | float | round(0) }}"
+      eco_temp_max_helper: number.gc_tbz48_smart_thermostat_eco_temperature_max
+      eco_temperature_max: "{{ states(eco_temp_max_helper) | float | round(0) }}"
+      # End ECO Mode
+      # Outside Temp Mode Variables & Helpers
+      outside_temp_helper: !input external_sensor
+      outside_temp: "{{ states(outside_temp_helper) | float | round(0) }}"
+      outside_temp_min_helper: number.gc_tbz48_smart_thermostat_external_temperature_min
+      outside_temp_min: "{{ states(outside_temp_min_helper) | float | round(0)}}"
+      outside_temp_max_helper: number.gc_tbz48_smart_thermostat_external_temperature_max
+      outside_temp_max: "{{ states(outside_temp_max_helper) | float | round(0) }}"
+      # End Ourdise Temp Mode
       ft_physical_state: " {{ state_attr('climate.freedonia_thermostat', 'hvac_action' ) }}"
       thermostat_state_helper: select.gc_tbz48_smart_thermostat_thermostat_state
       thermostat_state: " {{ states(thermostat_state_helper) }} "
@@ -112,17 +155,13 @@ actions:
       #
       cool_tolerence_float: "{{ states[cool_tolerance_helper].state | float }}"
       heat_tolerence_float: "{{ states[heat_tolerance_helper].state | float }}"
-      eco_temp_min_helper: number.gc_tbz48_smart_thermostat_eco_temperature_min
-      eco_temperature_min: "{{ states(eco_temp_min_helper) | float | round(0) }}"
-      eco_temp_max_helper: number.gc_tbz48_smart_thermostat_eco_temperature_max
-      eco_temperature_max: "{{ states(eco_temp_max_helper) | float | round(0) }}"
       #
       # Use the tolerences to calculate need to change thermostat settings
       #
-      heat_temp: >-
+      heat_temp_degrees: >-
         {{ ((adjusted_target_temp_float - heat_tolerence_float) - current_sensor_temp_float ) |
         round(2) }}
-      cool_temp: >-
+      cool_temp_degrees: >-
         {{ ((adjusted_target_temp_float + cool_tolerence_float ) - current_sensor_temp_float) |
         round(2) }}
       #
@@ -135,22 +174,52 @@ actions:
       entity_id: number.gc_tbz48_smart_thermostat_current_temperature
   - action: number.set_value
     data:
-      value: "{{ adjusted_cool }}"
+      value: "{{ cool_temp_degrees }}"
     target:
-      entity_id: number.gc_tbz48_smart_thermostat_adjusted_cool_temperature
+      entity_id: number.gc_tbz48_smart_thermostat_cool_temp_degrees
   - action: number.set_value
     data:
-      value: "{{ adjusted_heat }}"
+      value: "{{ heat_temp_degrees }}"
     target:
-      entity_id: number.gc_tbz48_smart_thermostat_adjusted_heat_temperature
+      entity_id: number.gc_tbz48_smart_thermostat_heat_temp_degrees
   - action: number.set_value
     data:
       value: "{{ adjusted_target_temp_float }}"
     target:
       entity_id: number.gc_tbz48_smart_thermostat_adjusted_target_temperature
+  - action: select.select_option
+    target:
+      entity_id: select.gc_tbz48_smart_thermostat_external_sensor
+    data:
+      option: !input external_sensor
+  - choose:
+      - conditions:
+          - alias: "Outdoor Mode Selected"
+            condition: template
+            value_template: "{{
+              enable_outside_mode and
+              ((outside_temp | float) > (outside_temp_min | float)) and
+              ((outside_temp | float) < (outside_temp_max | float))
+              }}"
+        sequence:
+          - variables:
+              enable_eco_mode: True
+          - action: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.tbz48_smart_thermostat_enable_eco_temperatures
+      - conditions:
+          - alias: "Outdoor Mode Deselected"
+            condition: template
+            value_template: " {{ trigger.id == 'outdoor_mode_change' and (not enable_outside_mode) }} "
+        sequence:
+          - action: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.tbz48_smart_thermostat_enable_eco_temperatures
+          - variables:
+              enable_eco_mode: False
   - if:
       - condition: template
-        value_template: '{{ enable_eco_mode and (thermostat_state != "eco") }}'
+        value_template: '{{ (enable_eco_mode and (thermostat_state != "eco")) or ((thermostat_state == "eco") and (trigger.id == "eco_temp_change")) }}'
     then:
       - action: select.select_option
         metadata: {}
@@ -182,7 +251,7 @@ actions:
       - conditions:
           - alias: heat
             condition: template
-            value_template: "{{ (heat_temp > 0) and (thermostat_state != 'eco') }}"
+            value_template: "{{ (heat_temp_degrees > 0) and (thermostat_state != 'eco') }}"
         sequence:
           - action: select.select_option
             target:
@@ -193,12 +262,13 @@ actions:
             data:
               target_temp_low: "{{ heat_low_setpoint }}"
               target_temp_high: "{{ heat_high_setpoint }}"
+              hvac_mode: heat_cool
             target:
               entity_id: !input thermostat
       - conditions:
           - alias: cool
             condition: template
-            value_template: "{{ (cool_temp < 0) and (thermostat_state != 'eco') }}"
+            value_template: "{{ (cool_temp_degrees < 0) and (thermostat_state != 'eco') }}"
         sequence:
           - action: select.select_option
             target:
@@ -209,6 +279,7 @@ actions:
             data:
               target_temp_low: "{{ cool_low_setpoint }}"
               target_temp_high: "{{ cool_high_setpoint }}"
+              hvac_mode: heat_cool
             target:
               entity_id: !input thermostat
       - conditions:
