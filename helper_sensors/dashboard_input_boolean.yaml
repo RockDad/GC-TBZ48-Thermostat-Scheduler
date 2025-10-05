@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_boolean",
+  "data": {
+    "items": [
+      {
+        "id": "tbz48_enable_advanced_settings",
+        "name": "tbz48_enable_advanced_settings",
+        "icon": "mdi:toggle-switch-off-outline"
+      },
+      {
+        "id": "tbz48_enable_weekday_configuration",
+        "icon": "mdi:toggle-switch-off-outline",
+        "name": "tbz48_enable_weekday_configuration"
+      },
+      {
+        "id": "tbz48_enable_weekend_configuration",
+        "name": "tbz48_enable_weekend_configuration",
+        "icon": "mdi:toggle-switch-off-outline"
+      },
+      {
+        "id": "tbz48_enable_internal_params",
+        "name": "tbz48_enable_internal_params",
+        "icon": "mdi:toggle-switch-off-outline"
+      }
+    ]
+  }
+}
+
