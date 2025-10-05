@@ -9,6 +9,8 @@ from homeassistant.helpers.restore_state import RestoreEntity
 from .const import (
     DEFAULT_ECO_MAX,
     DEFAULT_ECO_MIN,
+    DEFAULT_EXTERNAL_MIN,
+    DEFAULT_EXTERNAL_MAX,
     DEFAULT_TOLERANCE,
     DEFAULT_TOLERANCE_MAX_C,
     DEFAULT_TOLERANCE_MAX_F,
@@ -142,18 +144,30 @@ async def async_setup_entry(
             SETPOINT_RANGE_MAX,
             STEP_WHOLE,
         ),
-        "eco_temperature_min": [
+        "eco_temperature_min": (
             DEFAULT_ECO_MIN,
             ECO_RANGE_MIN,
             ECO_RANGE_MAX,
             STEP_WHOLE,
-        ],
-        "eco_temperature_max": [
+        ),
+        "eco_temperature_max": (
             DEFAULT_ECO_MAX,
             ECO_RANGE_MIN,
             ECO_RANGE_MAX,
             STEP_WHOLE,
-        ],
+        ),
+        "external_temperature_min": (
+            DEFAULT_EXTERNAL_MIN,
+            ECO_RANGE_MIN,
+            ECO_RANGE_MAX,
+            STEP_WHOLE,
+        ),
+        "external_temperature_max": (
+            DEFAULT_EXTERNAL_MAX,
+            ECO_RANGE_MIN,
+            ECO_RANGE_MAX,
+            STEP_WHOLE,
+        ),
         # Temperatures: user-defined limits
         "current_temperature": (
             entry.data["current_temperature"],
@@ -167,6 +181,7 @@ async def async_setup_entry(
             temp_max,
             STEP_MAJOR,
         ),
+        # Internal parameter tracking
         "adjusted_target_temperature": (temp_default, temp_min, temp_max, STEP_MAJOR),
         "adjusted_cool_temperature": (
             entry.data["adjusted_cool_temperature"],
@@ -180,6 +195,8 @@ async def async_setup_entry(
             temp_max,
             STEP_MAJOR,
         ),
+        "heat_temp_degrees": (0, -99, 99, STEP_MINOR),
+        "cool_temp_degrees": (0, -99, 99, STEP_MINOR),
     }
 
     for key, (default, min_v, max_v, step) in fixed_ranges.items():

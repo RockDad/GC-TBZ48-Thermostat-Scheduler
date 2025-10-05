@@ -1,3 +1,5 @@
+"""Constant definitions for tbz48_smart_thermostat."""
+
 DOMAIN = "tbz48_smart_thermostat"
 PLATFORMS = [
     "number",
@@ -31,6 +33,8 @@ ECO_RANGE_MIN = 55
 ECO_RANGE_MAX = 85
 DEFAULT_ECO_MIN = ECO_RANGE_MIN + 5
 DEFAULT_ECO_MAX = ECO_RANGE_MAX - 5
+DEFAULT_EXTERNAL_MIN = 68
+DEFAULT_EXTERNAL_MAX = 78
 
 # Time Settings
 DEFAULT_TIME_STRING = "06:00"
