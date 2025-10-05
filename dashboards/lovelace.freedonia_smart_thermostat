@@ -12,7 +12,10 @@
               "type": "markdown",
               "text_only": true,
               "content": "# Freedonia Smart Thermostat\n"
-            }
+            },
+            "layout": "center",
+            "badges_position": "bottom",
+            "badges_wrap": "wrap"
           },
           "sections": [
             {
@@ -20,10 +23,13 @@
               "cards": [
                 {
                   "type": "thermostat",
-                  "entity": "climate.freedonia_thermostat"
+                  "entity": "climate.freedonia_thermostat",
+                  "grid_options": {
+                    "columns": "full"
+                  }
                 }
               ],
-              "column_span": 1
+              "column_span": 3
             },
             {
               "type": "grid",
@@ -69,25 +75,94 @@
                   "type": "entities",
                   "entities": [
                     {
+                      "entity": "number.gc_tbz48_smart_thermostat_current_target_temperature",
+                      "name": "Override Target Temperature"
+                    }
+                  ],
+                  "title": "Control Thermostat",
+                  "grid_options": {
+                    "columns": "full"
+                  }
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
                       "entity": "input_boolean.tbz48_smart_thermostat_enable_multi_room_strategy",
-                      "name": "Enable Multi Room Sensor Strategy"
+                      "name": "Use Room Temperatures"
                     },
                     {
+                      "entity": "input_boolean.tbz48_smart_thermostat_enable_eco_temperatures"
+                    },
+                    {
+                      "entity": "input_boolean.tbz48_smart_thermostat_enable_external_sensor_strategy",
+                      "name": "Use Outside Temperature to Enable ECO"
+                    }
+                  ],
+                  "grid_options": {
+                    "columns": "full"
+                  }
+                },
+                {
+                  "type": "conditional",
+                  "conditions": [
+                    {
+                      "condition": "state",
                       "entity": "input_boolean.tbz48_smart_thermostat_enable_eco_temperatures",
-                      "name": "Enable ECO Mode"
+                      "state": "on"
+                    }
+                  ],
+                  "card": {
+                    "type": "entities",
+                    "entities": [
+                      {
+                        "entity": "number.gc_tbz48_smart_thermostat_eco_temperature_min",
+                        "name": "ECO Temperature Min"
+                      },
+                      {
+                        "entity": "number.gc_tbz48_smart_thermostat_eco_temperature_max",
+                        "name": "ECO Temperature Max"
+                      }
+                    ],
+                    "title": "ECO Temperatures Set Points"
+                  },
+                  "grid_options": {
+                    "columns": "full"
+                  }
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_external_temperature_min",
+                      "name": "Outside Temperature Min Set Point"
                     },
                     {
-                      "entity": "number.gc_tbz48_smart_thermostat_eco_temperature_min",
-                      "name": "ECO Temperature Min"
+                      "entity": "number.gc_tbz48_smart_thermostat_external_temperature_max",
+                      "name": "Outside Temperature Max Set Point"
                     },
                     {
-                      "entity": "number.gc_tbz48_smart_thermostat_eco_temperature_max",
-                      "name": "ECO Temperature Max"
-                    },
+                      "entity": "sensor.outdoor_temperature_sensor"
+                    }
+                  ],
+                  "visibility": [
+                    {
+                      "condition": "state",
+                      "entity": "input_boolean.tbz48_smart_thermostat_enable_external_sensor_strategy",
+                      "state": "on"
+                    }
+                  ],
+                  "grid_options": {
+                    "columns": "full"
+                  },
+                  "title": "Outside Air Temperature Set Points"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
                     {
                       "entity": "input_boolean.tbz48_enable_advanced_settings",
-                      "name": "Enable Advanced Settings",
-                      "icon": "mdi:toggle-switch-off-outline"
+                      "name": "Show Advanced Settings"
                     },
                     {
                       "entity": "input_boolean.tbz48_enable_weekday_configuration",
@@ -98,11 +173,9 @@
                       "name": "Show Weekend Time/Temperature Settings"
                     }
                   ],
-                  "title": "Thermostat Control Parameters",
                   "grid_options": {
                     "columns": "full"
-                  },
-                  "theme": "Graphite"
+                  }
                 },
                 {
                   "type": "entities",
@@ -120,10 +193,12 @@
                       "icon": "mdi:thermostat-cog"
                     },
                     {
-                      "entity": "number.gc_tbz48_smart_thermostat_tolerance_cool"
+                      "entity": "number.gc_tbz48_smart_thermostat_tolerance_cool",
+                      "name": "Tolerance Cool"
                     },
                     {
-                      "entity": "number.gc_tbz48_smart_thermostat_tolerance_heat"
+                      "entity": "number.gc_tbz48_smart_thermostat_tolerance_heat",
+                      "name": "Tolerance Heat"
                     },
                     {
                       "entity": "input_boolean.tbz48_enable_internal_params",
@@ -134,7 +209,7 @@
                   "grid_options": {
                     "columns": "full"
                   },
-                  "theme": "Graphite",
+                  "theme": "Graphite Light",
                   "visibility": [
                     {
                       "condition": "state",
@@ -142,44 +217,38 @@
                       "state": "on"
                     }
                   ]
-                }
-              ],
-              "column_span": 2
-            },
-            {
-              "type": "grid",
-              "cards": [
+                },
                 {
                   "type": "entities",
                   "entities": [
                     {
-                      "entity": "number.gc_tbz48_smart_thermostat_adjusted_cool_temperature",
-                      "name": "Adjusted Cool Temperature"
-                    },
-                    {
-                      "entity": "number.gc_tbz48_smart_thermostat_adjusted_heat_temperature",
-                      "name": "Adjjusted Heat Temperature"
-                    },
-                    {
                       "entity": "number.gc_tbz48_smart_thermostat_adjusted_target_temperature",
                       "name": "Adjusted Target Temperature"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_heat_temp_degrees",
+                      "name": "Heat Temp Degrees"
+                    },
+                    {
+                      "entity": "number.gc_tbz48_smart_thermostat_cool_temp_degrees",
+                      "name": "Cool Temp Degrees"
                     }
                   ],
-                  "title": "Monitor Thermostat Internal Parameters",
+                  "title": "Thermostat Internal Parameters",
                   "grid_options": {
                     "columns": "full"
                   },
-                  "theme": "Graphite"
+                  "theme": "Graphite",
+                  "visibility": [
+                    {
+                      "condition": "state",
+                      "entity": "input_boolean.tbz48_enable_internal_params",
+                      "state": "on"
+                    }
+                  ]
                 }
               ],
-              "column_span": 2,
-              "visibility": [
-                {
-                  "condition": "state",
-                  "entity": "input_boolean.tbz48_enable_internal_params",
-                  "state": "on"
-                }
-              ]
+              "column_span": 2
             },
             {
               "type": "grid",
